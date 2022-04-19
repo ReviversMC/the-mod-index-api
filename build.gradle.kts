@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.reviversmc.themodindex.api"
-version = "1.0.0+1.0.0"
+version = "1.0.0-1.0.0"
 
 repositories {
     mavenCentral()
@@ -25,6 +25,17 @@ tasks {
     java {
         withJavadocJar()
         withSourcesJar()
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>("api") {
+                groupId = rootProject.group.toString()
+                artifactId = rootProject.name
+                version = rootProject.version.toString()
+                artifact(shadowJar.get())
+            }
+        }
     }
 
     shadowJar {
