@@ -6,6 +6,9 @@ import com.github.reviversmc.themodindex.api.data.ManifestJson;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * The downloader for accessing the-mod-index, or similarly structured indexes.
+ */
 public interface InfoDownloader {
 
     /**
