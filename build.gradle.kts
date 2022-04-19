@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation("com.squareup.moshi:moshi:1.13.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
 tasks {
@@ -27,5 +28,12 @@ tasks {
 
     shadowJar {
         archiveFileName.set(rootProject.name + "-" + rootProject.version + ".jar")
+    }
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
     }
 }
