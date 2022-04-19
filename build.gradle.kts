@@ -14,6 +14,9 @@ repositories {
 dependencies {
     compileOnly("com.squareup.moshi:moshi:1.13.0")
     compileOnly("com.squareup.okhttp3:okhttp:4.9.3")
+
+    testImplementation("com.squareup.moshi:moshi:1.13.0")
+    testImplementation("com.squareup.okhttp3:okhttp:4.9.3")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
@@ -33,7 +36,7 @@ tasks {
                 groupId = rootProject.group.toString()
                 artifactId = rootProject.name
                 version = rootProject.version.toString()
-                artifact(shadowJar.get())
+                artifact(shadowJar)
             }
         }
     }
