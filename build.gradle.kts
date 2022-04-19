@@ -1,6 +1,7 @@
 plugins {
     id ("com.github.johnrengelman.shadow") version "7.1.2"
     java
+    `maven-publish`
 }
 
 group = "com.github.reviversmc.themodindex.api"
@@ -11,8 +12,8 @@ repositories {
 }
 
 dependencies {
-    implementation("com.squareup.moshi:moshi:1.13.0")
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    compileOnly("com.squareup.moshi:moshi:1.13.0")
+    compileOnly("com.squareup.okhttp3:okhttp:4.9.3")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
