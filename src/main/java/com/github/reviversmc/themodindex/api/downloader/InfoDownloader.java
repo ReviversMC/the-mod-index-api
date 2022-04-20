@@ -46,4 +46,13 @@ public interface InfoDownloader {
      * @throws IOException If there was an error downloading the manifest.json file.
      */
     Optional<ManifestJson> downloadManifestJson(String genericIdentifier) throws IOException;
+
+    /**
+     * A {@link ManifestJson.ManifestFile} for the given identifier.
+     * This is not to be confused with the manifest.json file, which can be obtained with {@link #downloadManifestJson(String)}
+     * @param identifier The identifier of the file entry to retrieve.
+     * @return The requested manifest.json file.
+     * @throws IOException If there was an error downloading the manifest.json file.
+     */
+    Optional<ManifestJson.ManifestFile> downloadManifestFileEntry(String identifier) throws IOException;
 }
