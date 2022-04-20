@@ -2,6 +2,7 @@ package com.github.reviversmc.themodindex.api.downloader;
 
 import com.github.reviversmc.themodindex.api.data.IndexJson;
 import com.github.reviversmc.themodindex.api.data.ManifestJson;
+import com.github.reviversmc.themodindex.api.moshiAdapter.OptionalFactory;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import okhttp3.OkHttpClient;
@@ -11,6 +12,9 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * The default implementation of {@link IndexInfoDownloader}
+ */
 public class IndexInfoDownloader implements InfoDownloader {
 
     private final JsonAdapter<IndexJson> indexJsonAdapter;
@@ -23,11 +27,15 @@ public class IndexInfoDownloader implements InfoDownloader {
 
     /**
      * This creates a downloader for with a default index:
-     * <a href="https://github.com/ReviversMC/the-mod-index">https://github.com/ReviversMC/the-mod-index</a>
+     * <a href="https://raw.githubusercontent.com/ReviversMC/the-mod-index-api/">https://raw.githubusercontent.com/ReviversMC/the-mod-index-api/</a>
      */
-    public IndexInfoDownloader(Moshi moshi, OkHttpClient okHttpClient) {
-        this.repositoryUrlAsString = "https://github.com/ReviversMC/the-mod-index";
+    public IndexInfoDownloader(OkHttpClient okHttpClient) {
+        this.repositoryUrlAsString = "https://raw.githubusercontent.com/ReviversMC/the-mod-index-api/";
         this.okHttpClient = okHttpClient;
+
+        Moshi moshi = new Moshi.Builder()
+                .add(new OptionalFactory())
+                .build();
         indexJsonAdapter = moshi.adapter(IndexJson.class);
         manifestJsonAdapter = moshi.adapter(ManifestJson.class);
     }
@@ -37,12 +45,16 @@ public class IndexInfoDownloader implements InfoDownloader {
      *
      * @param repositoryUrlAsString The root url of the repository.
      */
-    public IndexInfoDownloader(Moshi moshi, OkHttpClient okHttpClient, String repositoryUrlAsString) {
+    public IndexInfoDownloader(OkHttpClient okHttpClient, String repositoryUrlAsString) {
         if (repositoryUrlAsString.endsWith("/"))
             this.repositoryUrlAsString = repositoryUrlAsString.substring(0, repositoryUrlAsString.length() - 1);
         else this.repositoryUrlAsString = repositoryUrlAsString;
 
         this.okHttpClient = okHttpClient;
+
+        Moshi moshi = new Moshi.Builder()
+                .add(new OptionalFactory())
+                .build();
         indexJsonAdapter = moshi.adapter(IndexJson.class);
         manifestJsonAdapter = moshi.adapter(ManifestJson.class);
     }
@@ -65,14 +77,13 @@ public class IndexInfoDownloader implements InfoDownloader {
                         .build()
         ).execute();
 
-        downloadResponse.close();
-
-        if (downloadResponse.isSuccessful()) {
-            if (downloadResponse.body() != null) {
-                indexJson = indexJsonAdapter.fromJson(downloadResponse.body().string());
-                return getIndexJson();
-            }
+        if (downloadResponse.body() != null) {
+            indexJson = indexJsonAdapter.fromJson(downloadResponse.body().string());
+            downloadResponse.close();
+            return getIndexJson();
         }
+
+        downloadResponse.close();
         return Optional.empty();
     }
 
@@ -90,18 +101,16 @@ public class IndexInfoDownloader implements InfoDownloader {
                 Response downloadResponse = okHttpClient.newCall(
                         new Request.Builder()
                                 .url(repositoryUrlAsString + "/mods/" +
-                                        genericIdentifier.split(":")[0] + genericIdentifier.split(":")[1])
+                                        genericIdentifier.split(":")[0] + "/" +
+                                        genericIdentifier.split(":")[1] + ".json")
                                 .build()
                 ).execute();
 
-                downloadResponse.close();
-
-                if (downloadResponse.isSuccessful()) {
                     if (downloadResponse.body() != null) {
                         ManifestJson manifestJson = manifestJsonAdapter.fromJson(downloadResponse.body().string());
+                        downloadResponse.close();
                         return Optional.ofNullable(manifestJson);
                     }
-                }
             }
         }
         return Optional.empty();
