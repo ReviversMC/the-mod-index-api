@@ -15,21 +15,21 @@ public class DownloaderTest {
     OkHttpClient okHttpClient = new OkHttpClient();
 
     @Test
-    void shouldReturnDefaultManifestIndex() {
+    public void shouldReturnDefaultManifestIndex() {
         InfoDownloader infoDownloader = new IndexInfoDownloader(okHttpClient);
         Assertions.assertEquals("https://raw.githubusercontent.com/ReviversMC/the-mod-index-api/",
                 infoDownloader.getRepositoryUrlAsString());
     }
 
     @Test
-    void shouldNotReturnIndexInfo() {
+    public void shouldNotReturnIndexInfo() {
         //The basis of this test is to the index file is not automatically downloaded without an end user's consent.
         InfoDownloader infoDownloader = new IndexInfoDownloader(okHttpClient);
         Assertions.assertEquals(Optional.empty(), infoDownloader.getIndexJson());
     }
 
     @Test
-    void shouldReturnFakeModInfo() throws IOException {
+    public void shouldReturnFakeModInfo() throws IOException {
         InfoDownloader infoDownloader = new IndexInfoDownloader(
                 okHttpClient,
                 "https://raw.githubusercontent.com/ReviversMC/the-mod-index-api/main/fakeIndex/"
