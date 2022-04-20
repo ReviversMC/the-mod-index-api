@@ -3,7 +3,7 @@
 [![Release](https://jitpack.io/v/ReviversMC/the-mod-index.svg)]
 
 This is meant as a Java/other JVM languages api to access [the-mod-index](https://github.com/reviversmc/the-mod-index).
-It will be officially maintained by ReviversMC.
+It will be officially maintained by ReviversMC. We follow the versioning scheme of `index version-api version`.  
 Get it on Jitpack!  
 The api does rely on 2 dependencies in order to work:
 - [Moshi by Square](https://github.com/square/moshi/)
