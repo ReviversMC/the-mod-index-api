@@ -1,6 +1,6 @@
 plugins {
     id ("com.github.johnrengelman.shadow") version "7.1.2"
-    java
+    `java-library`
     `maven-publish`
 }
 
@@ -12,8 +12,8 @@ repositories {
 }
 
 dependencies {
-    shadow("com.squareup.moshi:moshi:1.13.0")
-    shadow("com.squareup.okhttp3:okhttp:4.9.3")
+    api("com.squareup.moshi:moshi:1.13.0")
+    api("com.squareup.okhttp3:okhttp:4.9.3")
 
     testImplementation("com.squareup.moshi:moshi:1.13.0")
     testImplementation("com.squareup.okhttp3:okhttp:4.9.3")
