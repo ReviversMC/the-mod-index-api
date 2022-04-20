@@ -1,8 +1,7 @@
 # The mod index api
 
-[![Release](https://jitpack.io/v/ReviversMC/the-mod-index.svg)]
+[![Release](https://jitpack.io/v/reviversmc/the-mod-index-api.svg?label=Release)](https://jitpack.io/#reviversmc/the-mod-index-api)
 
-This is meant as a Java/other JVM languages api to access [the-mod-index](https://github.com/reviversmc/the-mod-index).
 It will be officially maintained by ReviversMC. We follow the versioning scheme of `index version-api version`.  
 Get it on Jitpack!  
 The api does rely on 2 dependencies in order to work:
