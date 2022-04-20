@@ -33,10 +33,7 @@ tasks {
     publishing {
         publications {
             create<MavenPublication>("api") {
-                groupId = rootProject.group.toString()
-                artifactId = rootProject.name
-                version = rootProject.version.toString()
-                artifact(shadowJar)
+                from(rootProject.components["java"])
             }
         }
     }
