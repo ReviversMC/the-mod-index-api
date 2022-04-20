@@ -10,6 +10,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -106,13 +107,43 @@ public class IndexInfoDownloader implements InfoDownloader {
                                 .build()
                 ).execute();
 
-                    if (downloadResponse.body() != null) {
-                        ManifestJson manifestJson = manifestJsonAdapter.fromJson(downloadResponse.body().string());
-                        downloadResponse.close();
-                        return Optional.ofNullable(manifestJson);
-                    }
+                if (downloadResponse.body() != null) {
+                    ManifestJson manifestJson = manifestJsonAdapter.fromJson(downloadResponse.body().string());
+                    downloadResponse.close();
+                    return Optional.ofNullable(manifestJson);
+                }
             }
         }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<ManifestJson.ManifestFile> downloadManifestFileEntry(String identifier) throws IOException {
+
+        Optional<ManifestJson> optionalManifestJson = downloadManifestJson(
+                identifier.substring(0, identifier.lastIndexOf(":"))
+        );
+
+        if (optionalManifestJson.isPresent()) {
+
+            String sha1Hash = "";
+
+            for (IndexJson.IndexFile indexFile : getOrDownloadIndexJson()
+                    .orElse(new IndexJson(Optional.empty(), List.of())).files()) {
+
+                if (indexFile.identifier().orElse("").equals(identifier)) {
+                    sha1Hash = indexFile.sha1Hash().orElse("");
+                    break;
+                }
+            }
+
+            for (ManifestJson.ManifestFile manifestFile : optionalManifestJson.get().files()) {
+                if (manifestFile.sha1Hash().orElse("").equals(sha1Hash)) {
+                    return Optional.of(manifestFile);
+                }
+            }
+        }
+
         return Optional.empty();
     }
 }

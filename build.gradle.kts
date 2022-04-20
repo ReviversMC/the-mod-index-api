@@ -5,15 +5,15 @@ plugins {
 }
 
 group = "com.github.reviversmc.themodindex.api"
-version = "1.0.0-1.0.0"
+version = "1.0.0-1.1.0"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compileOnly("com.squareup.moshi:moshi:1.13.0")
-    compileOnly("com.squareup.okhttp3:okhttp:4.9.3")
+    shadow("com.squareup.moshi:moshi:1.13.0")
+    shadow("com.squareup.okhttp3:okhttp:4.9.3")
 
     testImplementation("com.squareup.moshi:moshi:1.13.0")
     testImplementation("com.squareup.okhttp3:okhttp:4.9.3")
