@@ -12,10 +12,26 @@ import java.util.Optional;
 
 public class DownloaderTest {
 
+    OkHttpClient okHttpClient = new OkHttpClient();
+
+    @Test
+    void shouldReturnDefaultManifestIndex() {
+        InfoDownloader infoDownloader = new IndexInfoDownloader(okHttpClient);
+        Assertions.assertEquals("https://raw.githubusercontent.com/ReviversMC/the-mod-index-api/",
+                infoDownloader.getRepositoryUrlAsString());
+    }
+
+    @Test
+    void shouldNotReturnIndexInfo() {
+        //The basis of this test is to the index file is not automatically downloaded without an end user's consent.
+        InfoDownloader infoDownloader = new IndexInfoDownloader(okHttpClient);
+        Assertions.assertEquals(Optional.empty(), infoDownloader.getIndexJson());
+    }
+
     @Test
     void shouldReturnFakeModInfo() throws IOException {
         InfoDownloader infoDownloader = new IndexInfoDownloader(
-                new OkHttpClient.Builder().build(),
+                okHttpClient,
                 "https://raw.githubusercontent.com/ReviversMC/the-mod-index-api/main/fakeIndex/"
         );
 
@@ -64,6 +80,17 @@ public class DownloaderTest {
                                 Optional.empty(), List.of()
                         )
                 )
+        );
+
+        Assertions.assertEquals(
+                new ManifestJson.ManifestFile(
+                        Optional.of("brick-1.18.2+1.2.0"),
+                        List.of("1.18.2"),
+                        Optional.of("47a013e660d408619d894b20806b1d5086aab03b"),
+                        List.of()
+                ),
+                infoDownloader.downloadManifestFileEntry("bricks:fakeMod:brick-1.18.2+1.2.0")
+                        .orElse(new ManifestJson.ManifestFile(Optional.empty(), List.of(), Optional.empty(), List.of()))
         );
     }
 
