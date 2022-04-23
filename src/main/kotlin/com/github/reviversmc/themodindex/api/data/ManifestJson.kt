@@ -1,10 +1,7 @@
-package com.github.reviversmc.themodindex.api.data;
-
-import java.util.List;
-import java.util.Optional;
+package com.github.reviversmc.themodindex.api.data
 
 /**
- * A manifest for a mod. The same mod meant for different mod loaders (e.g. Fabric, Forge, etc.) will have different manifests.
+ * A manifest for a mod. The same mod meant for different mod loaders (e.g. Quilt, Fabric, Forge, etc.) will have different manifests.
  *
  * @param schemaVersion The version of the manifest schema.
  * @param fancyName     The user readable name of the project.
@@ -15,9 +12,18 @@ import java.util.Optional;
  * @param links         A list of links related to the mod.
  * @param files         File versions for the mod.
  */
-public record ManifestJson(Optional<String> schemaVersion, Optional<String> fancyName, Optional<String> author,
-                           Optional<String> license, Optional<String> curseForgeId, Optional<String> modrinthId,
-                           Optional<ManifestLinks> links, List<ManifestFile> files) {
+@kotlinx.serialization.Serializable
+data class ManifestJson(
+    val schemaVersion: String?,
+    val fancyName: String?,
+    val author: String?,
+    val license: String?,
+    val curseForgeId: String?,
+    val modrinthId: String?,
+    val links: ManifestLinks?,
+    val files: List<ManifestFile>
+) {
+
     /**
      * A list of links related to the mod.
      *
@@ -25,15 +31,17 @@ public record ManifestJson(Optional<String> schemaVersion, Optional<String> fanc
      * @param sourceControl A link to the mod's source control, no mirrors. Remove endings like ".git".
      * @param others        A list of other links related to the mod.
      */
-    public record ManifestLinks(Optional<String> issue, Optional<String> sourceControl, List<OtherLink> others) {
+    @kotlinx.serialization.Serializable
+    data class ManifestLinks(val issue: String?, val sourceControl: String?, val others: List<OtherLink>) {
+
         /**
          * A list of other links related to the mod.
          *
          * @param linkName The type of link, like "discord", "irc", or "GitHub wiki"
          * @param url      The url of the link.
          */
-        public record OtherLink(Optional<String> linkName, Optional<String> url) {
-        }
+        @kotlinx.serialization.Serializable
+        data class OtherLink(val linkName: String?, val url: String?)
     }
 
     /**
@@ -44,8 +52,8 @@ public record ManifestJson(Optional<String> schemaVersion, Optional<String> fanc
      * @param sha1Hash     The sha1 hash of the file.
      * @param downloadUrls A list of urls to download the file from.
      */
-    public record ManifestFile(Optional<String> fileName, List<String> mcVersions, Optional<String> sha1Hash,
-                               List<String> downloadUrls) {
-    }
-
+    @kotlinx.serialization.Serializable
+    data class ManifestFile(
+        val fileName: String?, val mcVersions: List<String>, val sha1Hash: String?, val downloadUrls: List<String>
+    )
 }
