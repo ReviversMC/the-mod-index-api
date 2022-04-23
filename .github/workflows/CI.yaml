@@ -29,9 +29,3 @@ jobs:
       run: ./gradlew test
     - name: ShadowJar api
       run: ./gradlew shadowJar
-    - name: Deploy KDoc
-      uses: JamesIves/github-pages-deploy-action@v4.3.0
-      with:
-        branch: ${{ github.ref_name }}
-        folder: build/dokka/html
-

@@ -1,0 +1,28 @@
+name: Deploy KDoc
+
+on:
+  push:
+    branches: [ main, next/* ]
+  pull_request:
+    branches: [ main, next/* ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Create KDoc
+        run: ./gradlew dokkaHtml
+      - name: Deploy KDoc
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        with:
+          branch: ${{ github.ref_name }}
+          folder: build/dokka/html
+
