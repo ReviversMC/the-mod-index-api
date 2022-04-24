@@ -6,9 +6,7 @@ It will be officially maintained by ReviversMC. We follow the versioning scheme 
 The api is written in Kotlin, and is best used with Kotlin. Regardless, it should still remain functional on Java.
 
 Get it on Jitpack!  
-Javadoc can be found at `https://javadoc.jitpack.io/com/github/reviversmc/the-mod-index-api/VERSION/javadoc/`, 
-where `VERSION` is the version of the api (e.g. the version in the button above).
-
+KDocs can be found at [https://reviversmc.github.io/the-mod-index-api/](https://reviversmc.github.io/the-mod-index-api/).
 ## Community apis
 If you have a community maintained version of the api in some other language, do let us know, and we'd be happy to feature it.
 
