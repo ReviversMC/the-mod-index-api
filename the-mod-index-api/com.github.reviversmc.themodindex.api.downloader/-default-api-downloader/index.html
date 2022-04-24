@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-    <title>IndexInfoDownloader</title>
+    <title>DefaultApiDownloader</title>
     <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../../";</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
@@ -42,16 +42,16 @@ if(savedDarkMode === true){
         <div id="sideMenu"></div>
     </div>
     <div id="main">
-<div class="main-content" id="content" pageIds="the-mod-index-api::com.github.reviversmc.themodindex.api.downloader/IndexInfoDownloader///PointingToDeclaration//769193423">
-  <div class="breadcrumbs"><a href="../../../index.html">the-mod-index-api</a><span class="delimiter">/</span><a href="../index.html">com.github.reviversmc.themodindex.api.downloader</a><span class="delimiter">/</span><a href="index.html">IndexInfoDownloader</a></div>
+<div class="main-content" id="content" pageIds="the-mod-index-api::com.github.reviversmc.themodindex.api.downloader/DefaultApiDownloader///PointingToDeclaration//769193423">
+  <div class="breadcrumbs"><a href="../../../index.html">the-mod-index-api</a><span class="delimiter">/</span><a href="../index.html">com.github.reviversmc.themodindex.api.downloader</a><span class="delimiter">/</span><a href="index.html">DefaultApiDownloader</a></div>
   <div class="cover ">
-    <h1 class="cover"><span>Index</span><wbr></wbr><span>Info</span><wbr></wbr><span><span>Downloader</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">IndexInfoDownloader</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;okHttpClient<span class="token operator">: </span><span data-unresolved-link="okhttp3/OkHttpClient///PointingToDeclaration/">OkHttpClient</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>repositoryUrlAsString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>&quot;https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1&quot;.let {
+    <h1 class="cover"><span>Default</span><wbr></wbr><span>Api</span><wbr></wbr><span><span>Downloader</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">DefaultApiDownloader</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;okHttpClient<span class="token operator">: </span><span data-unresolved-link="okhttp3/OkHttpClient///PointingToDeclaration/">OkHttpClient</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>repositoryUrlAsString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>&quot;https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1&quot;.let {
         if (it.endsWith(&quot;/&quot;)) it.substring(0, it.length - 1) else it
     }<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;json<span class="token operator">: </span><span data-unresolved-link="kotlinx.serialization.json/Json///PointingToDeclaration/">Json</span><span class="token operator"> = </span>Json {
         ignoreUnknownKeys = true
         prettyPrint = true
-    }</span></span><span class="token punctuation">)</span> : <a href="../-info-downloader/index.html">InfoDownloader</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">The default implementation of <a href="index.html">IndexInfoDownloader</a></p><h4 class="">Author</h4><p class="paragraph">ReviversMC</p><h4 class="">Since</h4><p class="paragraph">1.0.0-1.2.0</p></div></div>
+    }</span></span><span class="token punctuation">)</span> : <a href="../-api-downloader/index.html">ApiDownloader</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">The default implementation of <a href="index.html">DefaultApiDownloader</a></p><h4 class="">Author</h4><p class="paragraph">ReviversMC</p><h4 class="">Since</h4><p class="paragraph">1.0.0-1.2.0</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Parameters">Parameters</button></div>
@@ -61,17 +61,17 @@ if(savedDarkMode === true){
         <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>ok</span><wbr></wbr><span>Http</span><wbr></wbr><span><span>Client</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The <span data-unresolved-link="okhttp3/OkHttpClient///PointingToDeclaration/">OkHttpClient</span> to use for the download</p></div></div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>repository</span><wbr></wbr><span>Url</span><wbr></wbr><span>As</span><wbr></wbr><span><span>String</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The URL of the repository to download from. Default: &quot;https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1&quot;</p></div></div></div></div></div><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>json</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The <span data-unresolved-link="kotlinx.serialization.json/Json///PointingToDeclaration/">Json</span> instance to use for serialization. Default options: ignoreUnknownKeys = true, prettyPrint = true</p></div></div></div></div></div></div></div></div></div>
       </div>
       <h2 class="tabbedcontent">Constructors</h2>
-      <div class="table" data-togglable="Constructors"><a data-name="-1434635016%2FConstructors%2F769193423" anchor-label="IndexInfoDownloader" id="-1434635016%2FConstructors%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+      <div class="table" data-togglable="Constructors"><a data-name="1200361060%2FConstructors%2F769193423" anchor-label="DefaultApiDownloader" id="1200361060%2FConstructors%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
         <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
           <div class="main-subrow keyValue TabbedContent">
             <div class=""><span class="inline-flex">
-                <div><a href="-index-info-downloader.html"><span>Index</span><wbr></wbr><span>Info</span><wbr></wbr><span><span>Downloader</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1434635016%2FConstructors%2F769193423"></span>
+                <div><a href="-default-api-downloader.html"><span>Default</span><wbr></wbr><span>Api</span><wbr></wbr><span><span>Downloader</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1200361060%2FConstructors%2F769193423"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-index-info-downloader.html"><span class="token function">IndexInfoDownloader</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;okHttpClient<span class="token operator">: </span><span data-unresolved-link="okhttp3/OkHttpClient///PointingToDeclaration/">OkHttpClient</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;repositoryUrlAsString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>&quot;https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1&quot;.let {
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-default-api-downloader.html"><span class="token function">DefaultApiDownloader</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;okHttpClient<span class="token operator">: </span><span data-unresolved-link="okhttp3/OkHttpClient///PointingToDeclaration/">OkHttpClient</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;repositoryUrlAsString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>&quot;https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1&quot;.let {
         if (it.endsWith(&quot;/&quot;)) it.substring(0, it.length - 1) else it
     }<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;json<span class="token operator">: </span><span data-unresolved-link="kotlinx.serialization.json/Json///PointingToDeclaration/">Json</span><span class="token operator"> = </span>Json {
         ignoreUnknownKeys = true
@@ -83,12 +83,12 @@ if(savedDarkMode === true){
         </div>
       </div>
       <h2 class="">Functions</h2>
-      <div class="table" data-togglable="Functions"><a data-name="-1409060582%2FFunctions%2F769193423" anchor-label="downloadIndexJson" id="-1409060582%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+      <div class="table" data-togglable="Functions"><a data-name="-148680201%2FFunctions%2F769193423" anchor-label="downloadIndexJson" id="-148680201%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
         <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
           <div class="main-subrow keyValue ">
             <div class=""><span class="inline-flex">
                 <div><a href="download-index-json.html"><span>download</span><wbr></wbr><span>Index</span><wbr></wbr><span><span>Json</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1409060582%2FFunctions%2F769193423"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-148680201%2FFunctions%2F769193423"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
@@ -98,12 +98,12 @@ if(savedDarkMode === true){
             </div>
           </div>
         </div>
-<a data-name="699475319%2FFunctions%2F769193423" anchor-label="downloadManifestFileEntry" id="699475319%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+<a data-name="2091868346%2FFunctions%2F769193423" anchor-label="downloadManifestFileEntry" id="2091868346%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
         <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
           <div class="main-subrow keyValue ">
             <div class=""><span class="inline-flex">
                 <div><a href="download-manifest-file-entry.html"><span>download</span><wbr></wbr><span>Manifest</span><wbr></wbr><span>File</span><wbr></wbr><span><span>Entry</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="699475319%2FFunctions%2F769193423"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2091868346%2FFunctions%2F769193423"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
@@ -113,12 +113,12 @@ if(savedDarkMode === true){
             </div>
           </div>
         </div>
-<a data-name="-187134507%2FFunctions%2F769193423" anchor-label="downloadManifestJson" id="-187134507%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+<a data-name="1725764786%2FFunctions%2F769193423" anchor-label="downloadManifestJson" id="1725764786%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
         <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
           <div class="main-subrow keyValue ">
             <div class=""><span class="inline-flex">
                 <div><a href="download-manifest-json.html"><span>download</span><wbr></wbr><span>Manifest</span><wbr></wbr><span><span>Json</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-187134507%2FFunctions%2F769193423"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1725764786%2FFunctions%2F769193423"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
@@ -128,12 +128,12 @@ if(savedDarkMode === true){
             </div>
           </div>
         </div>
-<a data-name="1092730517%2FFunctions%2F769193423" anchor-label="getOrDownloadIndexJson" id="1092730517%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+<a data-name="-938680360%2FFunctions%2F769193423" anchor-label="getOrDownloadIndexJson" id="-938680360%2FFunctions%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
         <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
           <div class="main-subrow keyValue ">
             <div class=""><span class="inline-flex">
                 <div><a href="get-or-download-index-json.html"><span>get</span><wbr></wbr><span>Or</span><wbr></wbr><span>Download</span><wbr></wbr><span>Index</span><wbr></wbr><span><span>Json</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1092730517%2FFunctions%2F769193423"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-938680360%2FFunctions%2F769193423"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
@@ -145,32 +145,32 @@ if(savedDarkMode === true){
         </div>
       </div>
       <h2 class="">Properties</h2>
-      <div class="table" data-togglable="Properties"><a data-name="1498418546%2FProperties%2F769193423" anchor-label="indexJson" id="1498418546%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+      <div class="table" data-togglable="Properties"><a data-name="-1531372721%2FProperties%2F769193423" anchor-label="indexJson" id="-1531372721%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
         <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
           <div class="main-subrow keyValue ">
             <div class=""><span class="inline-flex">
                 <div><a href="index-json.html">indexJson</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1498418546%2FProperties%2F769193423"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1531372721%2FProperties%2F769193423"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><a data-name="1498418546%2FProperties%2F769193423" anchor-label="indexJson" id="1498418546%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index-json.html">indexJson</a><span class="token operator">: </span><a href="../../com.github.reviversmc.themodindex.api.data/-index-json/index.html">IndexJson</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1498418546%2FProperties%2F769193423" anchor-label="indexJson" id="1498418546%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a><p class="paragraph">The index.json file for this repository. Only retrieves the index.json file locally if it has already been downloaded.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><a data-name="-1531372721%2FProperties%2F769193423" anchor-label="indexJson" id="-1531372721%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index-json.html">indexJson</a><span class="token operator">: </span><a href="../../com.github.reviversmc.themodindex.api.data/-index-json/index.html">IndexJson</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-1531372721%2FProperties%2F769193423" anchor-label="indexJson" id="-1531372721%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a><p class="paragraph">The index.json file for this repository. Only retrieves the index.json file locally if it has already been downloaded.</p></div></div></div>
               </div>
             </div>
           </div>
         </div>
-<a data-name="1822324676%2FProperties%2F769193423" anchor-label="repositoryUrlAsString" id="1822324676%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
+<a data-name="1895342625%2FProperties%2F769193423" anchor-label="repositoryUrlAsString" id="1895342625%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a>
         <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
           <div class="main-subrow keyValue ">
             <div class=""><span class="inline-flex">
                 <div><a href="repository-url-as-string.html">repositoryUrlAsString</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1822324676%2FProperties%2F769193423"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1895342625%2FProperties%2F769193423"></span>
                   <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><a data-name="1822324676%2FProperties%2F769193423" anchor-label="repositoryUrlAsString" id="1822324676%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="repository-url-as-string.html">repositoryUrlAsString</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><a data-name="1895342625%2FProperties%2F769193423" anchor-label="repositoryUrlAsString" id="1895342625%2FProperties%2F769193423" data-filterable-set=":dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="repository-url-as-string.html">repositoryUrlAsString</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
               </div>
             </div>
           </div>
