@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.reviversmc.themodindex.api"
-version = "1.0.0-1.2.0"
+version = "1.0.0-2.0.0"
 
 repositories {
     mavenCentral()
