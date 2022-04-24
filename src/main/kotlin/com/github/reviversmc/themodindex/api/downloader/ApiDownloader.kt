@@ -6,7 +6,7 @@ import com.github.reviversmc.themodindex.api.data.ManifestJson
 /**
  * The downloader for accessing the-mod-index, or similarly structured indexes.
  */
-interface InfoDownloader {
+interface ApiDownloader {
 
     /**
      * The url of the repository that this downloader is for.

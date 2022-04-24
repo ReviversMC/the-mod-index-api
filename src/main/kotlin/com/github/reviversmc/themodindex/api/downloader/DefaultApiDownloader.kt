@@ -8,14 +8,14 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 /**
- * The default implementation of [IndexInfoDownloader]
+ * The default implementation of [DefaultApiDownloader]
  * @param okHttpClient The [OkHttpClient] to use for the download
  * @param repositoryUrlAsString The URL of the repository to download from. Default: "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1"
  * @param json The [Json] instance to use for serialization. Default options: ignoreUnknownKeys = true, prettyPrint = true
  * @author ReviversMC
  * @since 1.0.0-1.2.0
  * */
-class IndexInfoDownloader(
+class DefaultApiDownloader(
     private val okHttpClient: OkHttpClient,
     override val repositoryUrlAsString: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1".let {
         if (it.endsWith("/")) it.substring(0, it.length - 1) else it
@@ -24,7 +24,7 @@ class IndexInfoDownloader(
         ignoreUnknownKeys = true
         prettyPrint = true
     }
-) : InfoDownloader {
+) : ApiDownloader {
 
     override var indexJson: IndexJson? = null
         private set //We don't want consumers to be able to set this directly.
