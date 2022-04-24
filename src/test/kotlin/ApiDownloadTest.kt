@@ -1,11 +1,11 @@
 import com.github.reviversmc.themodindex.api.data.IndexJson
 import com.github.reviversmc.themodindex.api.data.ManifestJson
-import com.github.reviversmc.themodindex.api.downloader.IndexInfoDownloader
+import com.github.reviversmc.themodindex.api.downloader.DefaultApiDownloader
 import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-internal class FakeModIndex {
+internal class ApiDownloadTest {
 
     //TODO Replace test endpoint with localhost?
 
@@ -13,7 +13,7 @@ internal class FakeModIndex {
 
     @Test
     internal fun shouldReturnDefaultManifestIndex() {
-        val infoDownloader = IndexInfoDownloader(okHttpClient) //Use default repo url.
+        val infoDownloader = DefaultApiDownloader(okHttpClient) //Use default repo url.
         Assertions.assertEquals(
             "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1", infoDownloader.repositoryUrlAsString
         )
@@ -22,13 +22,13 @@ internal class FakeModIndex {
     @Test
     internal fun shouldNotReturnIndexInfo() {
         //The basis of this test is to the index file is not automatically downloaded without an end user's consent.
-        val infoDownloader = IndexInfoDownloader(okHttpClient)
+        val infoDownloader = DefaultApiDownloader(okHttpClient)
         Assertions.assertNull(infoDownloader.indexJson)
     }
 
     @Test
     internal fun shouldReturnFakeModInfo() {
-        val infoDownloader = IndexInfoDownloader(
+        val infoDownloader = DefaultApiDownloader(
             okHttpClient, "https://raw.githubusercontent.com/ReviversMC/the-mod-index-api/main/fakeIndex/"
         )
         Assertions.assertEquals(
