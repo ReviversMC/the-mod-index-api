@@ -23,6 +23,6 @@ jobs:
       - name: Deploy KDoc
         uses: JamesIves/github-pages-deploy-action@v4.3.0
         with:
-          branch: ${{ github.ref_name }}
+          branch: KDoc
           folder: build/dokka/html
 
