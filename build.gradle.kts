@@ -1,28 +1,42 @@
 plugins {
     id ("com.github.johnrengelman.shadow") version "7.1.2"
-    `java-library`
+    kotlin("jvm") version "1.6.21"
+    kotlin("plugin.serialization") version "1.6.21"
+    id("org.jetbrains.dokka") version "1.6.20"
     `maven-publish`
 }
 
 group = "com.github.reviversmc.themodindex.api"
-version = "1.0.0-1.1.0"
+version = "1.0.0-2.0.0"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    api("com.squareup.moshi:moshi:1.13.0")
     api("com.squareup.okhttp3:okhttp:4.9.3")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
-    testImplementation("com.squareup.moshi:moshi:1.13.0")
+    testImplementation(kotlin("test"))
     testImplementation("com.squareup.okhttp3:okhttp:4.9.3")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 }
 
 tasks {
     compileJava {
         options.release.set(17)
+    }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "17"
+    }
+
+    dokkaHtml {
+        dokkaSourceSets {
+            configureEach {
+                jdkVersion.set(17)
+            }
+        }
     }
 
     java {
@@ -33,7 +47,7 @@ tasks {
     publishing {
         publications {
             create<MavenPublication>("api") {
-                from(rootProject.components["java"])
+                from(rootProject.components["kotlin"])
             }
         }
     }

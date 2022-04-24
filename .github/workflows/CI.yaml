@@ -29,4 +29,3 @@ jobs:
       run: ./gradlew test
     - name: ShadowJar api
       run: ./gradlew shadowJar
-
