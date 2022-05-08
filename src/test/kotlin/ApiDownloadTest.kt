@@ -53,7 +53,7 @@ internal class ApiDownloadTest {
                 ), listOf(
                     ManifestJson.ManifestFile(
                         "brick-1.18.2+1.2.0", listOf("1.18.2"),
-                        "47a013e660d408619d894b20806b1d5086aab03b", emptyList()
+                        "47a013e660d408619d894b20806b1d5086aab03b", emptyList(), false
                     )
                 )
             ), infoDownloader.downloadManifestJson("bricks:fakeMod")
@@ -62,7 +62,7 @@ internal class ApiDownloadTest {
         Assertions.assertEquals(
             ManifestJson.ManifestFile(
                 "brick-1.18.2+1.2.0", listOf("1.18.2"),
-                "47a013e660d408619d894b20806b1d5086aab03b", emptyList()
+                "47a013e660d408619d894b20806b1d5086aab03b", emptyList(), false
             ), infoDownloader.downloadManifestFileEntry("bricks:fakeMod:brick-1.18.2+1.2.0")
         )
     }
