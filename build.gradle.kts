@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.reviversmc.themodindex.api"
-version = "1.0.0-2.0.0"
+version = "1+2.1.0"
 
 repositories {
     mavenCentral()
@@ -17,9 +17,10 @@ dependencies {
     api("com.squareup.okhttp3:okhttp:4.9.3")
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
-    testImplementation(kotlin("test"))
-    testImplementation("com.squareup.okhttp3:okhttp:4.9.3")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    testApi(kotlin("test"))
+    testApi("com.squareup.okhttp3:okhttp:4.9.3")
+    testApi("com.github.gmazzo:okhttp-mock:1.5.0")
+    testApi("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 }
 
 tasks {
@@ -28,6 +29,14 @@ tasks {
     }
 
     compileKotlin {
+        kotlinOptions.jvmTarget = "17"
+    }
+
+    compileTestJava {
+        options.release.set(17)
+    }
+
+    compileTestKotlin {
         kotlinOptions.jvmTarget = "17"
     }
 
