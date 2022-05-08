@@ -13,7 +13,7 @@ import okhttp3.Request
  * @param repositoryUrlAsString The URL of the repository to download from. Default: "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1"
  * @param json The [Json] instance to use for serialization. Default options: ignoreUnknownKeys = true, prettyPrint = true
  * @author ReviversMC
- * @since 1.0.0-1.2.0
+ * @since 1.0.0-2.0.0
  * */
 class DefaultApiDownloader(
     private val okHttpClient: OkHttpClient,

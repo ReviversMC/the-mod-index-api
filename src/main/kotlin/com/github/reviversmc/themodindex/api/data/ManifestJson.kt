@@ -11,6 +11,8 @@ package com.github.reviversmc.themodindex.api.data
  * @param modrinthId    The modrinth id of the mod, not the slug.
  * @param links         A list of links related to the mod.
  * @param files         File versions for the mod.
+ * @author ReviversMC
+ * @since 1.0.0-2.0.0
  */
 @kotlinx.serialization.Serializable
 data class ManifestJson(
@@ -30,6 +32,8 @@ data class ManifestJson(
      * @param issue         A link to the mod's issue tracker.
      * @param sourceControl A link to the mod's source control, no mirrors. Remove endings like ".git".
      * @param others        A list of other links related to the mod.
+     * @author ReviversMC
+     * @since 1.0.0-2.0.0
      */
     @kotlinx.serialization.Serializable
     data class ManifestLinks(val issue: String?, val sourceControl: String?, val others: List<OtherLink>) {
@@ -39,6 +43,8 @@ data class ManifestJson(
          *
          * @param linkName The type of link, like "discord", "irc", or "GitHub wiki"
          * @param url      The url of the link.
+         * @author ReviversMC
+         * @since 1.0.0-2.0.0
          */
         @kotlinx.serialization.Serializable
         data class OtherLink(val linkName: String?, val url: String?)
@@ -52,6 +58,8 @@ data class ManifestJson(
      * @param sha1Hash     The sha1 hash of the file.
      * @param downloadUrls A list of urls to download the file from.
      * @param curseDownloadAvailable Whether the file is available on Curse. A further api call to CF is required to get the download url.
+     * @author ReviversMC
+     * @since 1-2.1.0
      */
     @kotlinx.serialization.Serializable
     data class ManifestFile(
