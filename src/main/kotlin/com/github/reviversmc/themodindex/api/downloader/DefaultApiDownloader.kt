@@ -10,16 +10,15 @@ import okhttp3.Request
 /**
  * The default implementation of [DefaultApiDownloader]
  * @param okHttpClient The [OkHttpClient] to use for the download
- * @param repositoryUrlAsString The URL of the repository to download from. Default: "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1"
+ * @param unEditedRepositoryUrlAsString The URL of the repository to download from. Default: [https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1](https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1)".
+ * The url will be processed to remove the "/" at the end of the url, if found.
  * @param json The [Json] instance to use for serialization. Default options: ignoreUnknownKeys = true, prettyPrint = true
  * @author ReviversMC
  * @since 1.0.0-2.0.0
  * */
 class DefaultApiDownloader(
     private val okHttpClient: OkHttpClient,
-    override val repositoryUrlAsString: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1".let {
-        if (it.endsWith("/")) it.substring(0, it.length - 1) else it
-    },
+    unEditedRepositoryUrlAsString: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1",
     private val json: Json = Json {
         ignoreUnknownKeys = true
         prettyPrint = true
@@ -28,6 +27,11 @@ class DefaultApiDownloader(
 
     override var indexJson: IndexJson? = null
         private set //We don't want consumers to be able to set this directly.
+
+    //We want to ensure that we don't have the "/" at the end of the URL for consistency.
+    override val repositoryUrlAsString: String = if (unEditedRepositoryUrlAsString.endsWith("/"))
+        unEditedRepositoryUrlAsString.substring(0, unEditedRepositoryUrlAsString.length - 1)
+    else unEditedRepositoryUrlAsString
 
     override fun downloadIndexJson(): IndexJson? {
         val downloadResponse = okHttpClient.newCall(
@@ -51,9 +55,9 @@ class DefaultApiDownloader(
                 val downloadResponse = okHttpClient.newCall(
                     Request.Builder().url(
                         "$repositoryUrlAsString/mods/${
-                            genericIdentifier.split(":")[0]
+                            genericIdentifier.split(":")[0].lowercase()
                         }/${
-                            genericIdentifier.split(":")[1]
+                            genericIdentifier.split(":")[1].lowercase()
                         }.json"
                     ).build()
                 ).execute()
@@ -71,7 +75,7 @@ class DefaultApiDownloader(
 
         for (indexFile in indexJson?.files ?: return null) {
             if (indexFile.identifier.equals(identifier, false)) { //"==" calls .equals anyway
-                val manifestJson = downloadManifestJson(identifier)
+                val manifestJson = downloadManifestJson(identifier.lowercase())
                     ?: return null //We can pass the whole identifier as the version will be ignored.
                 return manifestJson.files.firstOrNull {
                     it.fileName.equals(identifier.split(":").last(), true)
