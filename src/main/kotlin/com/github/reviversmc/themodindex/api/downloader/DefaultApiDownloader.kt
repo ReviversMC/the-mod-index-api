@@ -78,7 +78,7 @@ class DefaultApiDownloader(
                 val manifestJson = downloadManifestJson(identifier.lowercase())
                     ?: return null //We can pass the whole identifier as the version will be ignored.
                 return manifestJson.files.firstOrNull {
-                    it.fileName.equals(identifier.split(":").last(), true)
+                    it.fileName.equals(identifier.split(":").last().lowercase(), true)
                 }
             }
         }
