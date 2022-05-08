@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
   "fancyName": "Fake Mod",
   "author": "Fake Author",
   "license": "AGPL-3.0",
@@ -17,7 +17,7 @@
   },
   "files": [
     {
-      "fileName": "brick-1.18.2+1.2.0",
+      "fileName": "bricks-1.18.2+1.2.0",
       "mcVersions": [
         "1.18.2"
       ],

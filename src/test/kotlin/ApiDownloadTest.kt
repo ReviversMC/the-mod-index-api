@@ -2,49 +2,70 @@ import com.github.reviversmc.themodindex.api.data.IndexJson
 import com.github.reviversmc.themodindex.api.data.ManifestJson
 import com.github.reviversmc.themodindex.api.downloader.DefaultApiDownloader
 import okhttp3.OkHttpClient
-import org.junit.jupiter.api.Assertions
+import okhttp3.mock.*
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
-internal class ApiDownloadTest {
+class ApiDownloadTest {
 
-    //TODO Replace test endpoint with localhost?
+    private val endpoint = "https://fakelocalhost/fakeindex"
+    private val identifier = "bricks:fakemod:bricks-1.18.2+1.2.0"
+    private val schemaVersion = "1.1.0"
 
-    private val okHttpClient = OkHttpClient()
+    //NOTE: The interceptor and all url calls must end with a '/'!
+    private val interceptor = MockInterceptor()
+    private val okHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     @Test
-    internal fun shouldReturnDefaultManifestIndex() {
+    fun `should return default manifest index`() {
         val infoDownloader = DefaultApiDownloader(okHttpClient) //Use default repo url.
-        Assertions.assertEquals(
+        assertEquals(
             "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1", infoDownloader.repositoryUrlAsString
         )
     }
 
     @Test
-    internal fun shouldNotReturnIndexInfo() {
+    fun `should not return index info`() {
         //The basis of this test is to the index file is not automatically downloaded without an end user's consent.
         val infoDownloader = DefaultApiDownloader(okHttpClient)
-        Assertions.assertNull(infoDownloader.indexJson)
+        assertNull(infoDownloader.indexJson)
     }
 
     @Test
-    internal fun shouldReturnFakeModInfo() {
+    fun `should return fake mod info`() {
+        val fakeIndexText = this.javaClass.getResource("/fakeIndex/mods/index.json")?.readText()
+        val fakeManifestText = this.javaClass.getResource("/fakeIndex/mods/bricks/fakemod.json")?.readText()
+
+        interceptor.rule(get, url eq "${endpoint}/mods/index.json") {
+            fakeIndexText?.let { respond(it).code(200) } ?: respond(500)
+        }
+
+        repeat(2) { //Repeat twice as this is called twice.
+            interceptor.rule(
+                get,
+                url eq "${endpoint}/mods/${identifier.split(":")[0]}/${identifier.split(":")[1]}.json"
+            ) {
+                fakeManifestText?.let { respond(it).code(200) } ?: respond(500)
+            }
+        }
+
         val infoDownloader = DefaultApiDownloader(
-            okHttpClient, "https://raw.githubusercontent.com/ReviversMC/the-mod-index-api/main/fakeIndex/"
+            okHttpClient, endpoint
         )
-        Assertions.assertEquals(
+        assertEquals(
             IndexJson(
-                "1.0.0", listOf(
+                schemaVersion, listOf(
                     IndexJson.IndexFile(
-                        "bricks:fakeMod:brick-1.18.2+1.2.0", "47a013e660d408619d894b20806b1d5086aab03b"
+                        identifier, "47a013e660d408619d894b20806b1d5086aab03b"
                     )
                 )
             ), infoDownloader.downloadIndexJson()
         )
 
-        Assertions.assertEquals(
+        assertEquals(
             ManifestJson(
-                "1.0.0", "Fake Mod", "Fake Author", "AGPL-3.0",
-                null, null, ManifestJson.ManifestLinks(
+                schemaVersion, "Fake Mod", "Fake Author", "AGPL-3.0", null, null, ManifestJson.ManifestLinks(
                     null, "https://github.com/ReviversMC/the-mod-index-api/fakeIndex", listOf(
                         ManifestJson.ManifestLinks.OtherLink(
                             "Discord", "https://discord.gg/6bTGYFppfz"
@@ -52,18 +73,24 @@ internal class ApiDownloadTest {
                     )
                 ), listOf(
                     ManifestJson.ManifestFile(
-                        "brick-1.18.2+1.2.0", listOf("1.18.2"),
-                        "47a013e660d408619d894b20806b1d5086aab03b", emptyList(), false
+                        identifier.split(":")[2],
+                        listOf("1.18.2"),
+                        "47a013e660d408619d894b20806b1d5086aab03b",
+                        emptyList(),
+                        false
                     )
                 )
-            ), infoDownloader.downloadManifestJson("bricks:fakeMod")
+            ), infoDownloader.downloadManifestJson(identifier) //We can pass an identifier as a generic identefier
         )
 
-        Assertions.assertEquals(
+        assertEquals(
             ManifestJson.ManifestFile(
-                "brick-1.18.2+1.2.0", listOf("1.18.2"),
-                "47a013e660d408619d894b20806b1d5086aab03b", emptyList(), false
-            ), infoDownloader.downloadManifestFileEntry("bricks:fakeMod:brick-1.18.2+1.2.0")
+                identifier.split(":")[2],
+                listOf("1.18.2"),
+                "47a013e660d408619d894b20806b1d5086aab03b",
+                emptyList(),
+                false
+            ), infoDownloader.downloadManifestFileEntry(identifier)
         )
     }
 }
