@@ -10,7 +10,7 @@ import kotlin.test.assertNull
 class ApiDownloadTest {
 
     private val endpoint = "https://fakelocalhost/fakeindex"
-    private val identifier = "bricks:fakemod:bricks-1.18.2+1.2.0"
+    private val identifier = "bricks:fakemod:1.2.0+bricks-1.18.2"
     private val schemaVersion = "1.1.0"
 
     //NOTE: The interceptor and all url calls must end with a '/'!

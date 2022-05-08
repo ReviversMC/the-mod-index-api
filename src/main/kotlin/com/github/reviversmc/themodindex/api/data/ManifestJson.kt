@@ -59,7 +59,7 @@ data class ManifestJson(
      * @param downloadUrls A list of urls to download the file from.
      * @param curseDownloadAvailable Whether the file is available on Curse. A further api call to CF is required to get the download url.
      * @author ReviversMC
-     * @since 1-2.1.0
+     * @since 2.1.0
      */
     @kotlinx.serialization.Serializable
     data class ManifestFile(

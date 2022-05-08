@@ -2,7 +2,7 @@
 
 [![Release](https://jitpack.io/v/reviversmc/the-mod-index-api.svg?label=Release)](https://jitpack.io/#reviversmc/the-mod-index-api)
 
-It will be officially maintained by ReviversMC. We follow the versioning scheme of `indexMajor+apiSemVer`.  
+It will be officially maintained by ReviversMC. 
 The api is written in Kotlin, and is best used with Kotlin. Regardless, it should still remain functional on Java.
 
 Get it on Jitpack!  
