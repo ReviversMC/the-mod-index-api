@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     api("com.squareup.okhttp3:okhttp:4.9.3")
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     testApi(kotlin("test"))
     testApi("com.squareup.okhttp3:okhttp:4.9.3")
