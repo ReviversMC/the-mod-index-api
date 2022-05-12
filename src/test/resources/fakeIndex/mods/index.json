@@ -3,7 +3,7 @@
   "files": [
     {
       "identifier": "bricks:fakemod:1.2.0+bricks-1.18.2",
-      "sha1Hash": "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
+      "sha512Hash": "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
     }
   ]
 }
