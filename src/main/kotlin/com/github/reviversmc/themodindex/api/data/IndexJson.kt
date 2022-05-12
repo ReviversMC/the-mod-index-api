@@ -15,10 +15,10 @@ data class IndexJson(val schemaVersion: String?, val files: List<IndexFile>) {
      * A file entry found in the index.json file.
      *
      * @param identifier The identifier of the mod file, in the format "modLoader:modName:version".
-     * @param sha1Hash  The SHA-1 hash of the mod file.
+     * @param sha512Hash  The SHA-512 hash of the mod file.
      * @author ReviversMC
-     * @since 1.0.0-2.0.0
+     * @since 3.0.0
      */
     @kotlinx.serialization.Serializable
-    data class IndexFile(val identifier: String?, val sha1Hash: String?)
+    data class IndexFile(val identifier: String?, val sha512Hash: String?)
 }

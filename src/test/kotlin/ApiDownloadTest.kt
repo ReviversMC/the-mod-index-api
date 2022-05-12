@@ -11,7 +11,7 @@ class ApiDownloadTest {
 
     private val endpoint = "https://fakelocalhost/fakeindex"
     private val identifier = "bricks:fakemod:1.2.0+bricks-1.18.2"
-    private val schemaVersion = "1.1.0"
+    private val schemaVersion = "2.0.0"
 
     //NOTE: The interceptor and all url calls must end with a '/'!
     private val interceptor = MockInterceptor()
@@ -21,7 +21,8 @@ class ApiDownloadTest {
     fun `should return default manifest index`() {
         val infoDownloader = DefaultApiDownloader(okHttpClient) //Use default repo url.
         assertEquals(
-            "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v1", infoDownloader.repositoryUrlAsString
+            "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v${schemaVersion.split(".")[0]}",
+            infoDownloader.repositoryUrlAsString
         )
     }
 
@@ -57,7 +58,8 @@ class ApiDownloadTest {
             IndexJson(
                 schemaVersion, listOf(
                     IndexJson.IndexFile(
-                        identifier, "47a013e660d408619d894b20806b1d5086aab03b"
+                        identifier,
+                        "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
                     )
                 )
             ), infoDownloader.downloadIndexJson()
@@ -75,7 +77,7 @@ class ApiDownloadTest {
                     ManifestJson.ManifestFile(
                         identifier.split(":")[2],
                         listOf("1.18.2"),
-                        "47a013e660d408619d894b20806b1d5086aab03b",
+                        "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9",
                         emptyList(),
                         false
                     )
@@ -87,7 +89,7 @@ class ApiDownloadTest {
             ManifestJson.ManifestFile(
                 identifier.split(":")[2],
                 listOf("1.18.2"),
-                "47a013e660d408619d894b20806b1d5086aab03b",
+                "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9",
                 emptyList(),
                 false
             ), infoDownloader.downloadManifestFileEntry(identifier)

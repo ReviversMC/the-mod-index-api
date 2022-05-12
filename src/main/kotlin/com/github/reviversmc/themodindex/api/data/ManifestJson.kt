@@ -55,17 +55,17 @@ data class ManifestJson(
      *
      * @param fileName     The name of the file, should not be used for version checking.
      * @param mcVersions   A list of Minecraft versions the file is compatible with.
-     * @param sha1Hash     The sha1 hash of the file.
+     * @param sha512Hash     The sha512 hash of the file.
      * @param downloadUrls A list of urls to download the file from.
      * @param curseDownloadAvailable Whether the file is available on Curse. A further api call to CF is required to get the download url.
      * @author ReviversMC
-     * @since 2.1.0
+     * @since 3.0.0
      */
     @kotlinx.serialization.Serializable
     data class ManifestFile(
         val fileName: String?,
         val mcVersions: List<String>,
-        val sha1Hash: String?,
+        val sha512Hash: String?,
         val downloadUrls: List<String>,
         val curseDownloadAvailable: Boolean?
     )
