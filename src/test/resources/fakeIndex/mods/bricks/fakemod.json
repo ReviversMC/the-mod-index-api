@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "fancyName": "Fake Mod",
   "author": "Fake Author",
   "license": "AGPL-3.0",
@@ -21,7 +21,7 @@
       "mcVersions": [
         "1.18.2"
       ],
-      "sha1Hash": "47a013e660d408619d894b20806b1d5086aab03b",
+      "sha512Hash": "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9",
       "downloadUrls": [],
       "curseDownloadAvailable": false
     }
