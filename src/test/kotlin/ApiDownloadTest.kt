@@ -11,9 +11,8 @@ class ApiDownloadTest {
 
     private val endpoint = "https://fakelocalhost/fakeindex"
     private val identifier = "bricks:fakemod:1.2.0+bricks-1.18.2"
-    private val schemaVersion = "2.0.0"
+    private val schemaVersion = "3.0.0"
 
-    //NOTE: The interceptor and all url calls must end with a '/'!
     private val interceptor = MockInterceptor()
     private val okHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 

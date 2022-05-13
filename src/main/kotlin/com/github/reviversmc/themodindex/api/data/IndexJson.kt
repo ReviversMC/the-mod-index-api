@@ -3,13 +3,13 @@ package com.github.reviversmc.themodindex.api.data
 /**
  * Represents the index.json file found in the mod index.
  *
- * @param schemaVersion The schema version of the index.json file.
+ * @param indexVersion The schema version of the index.json file.
  * @param files         The [IndexFile] entries found in the index.json file.
  * @author ReviversMC
  * @since 3.0.1
  */
 @kotlinx.serialization.Serializable
-data class IndexJson(val schemaVersion: String, val files: List<IndexFile>) {
+data class IndexJson(val indexVersion: String, val files: List<IndexFile>) {
 
     /**
      * A file entry found in the index.json file.
