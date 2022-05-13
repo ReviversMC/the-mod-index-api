@@ -18,7 +18,7 @@ import okhttp3.Request
  * */
 class DefaultApiDownloader(
     private val okHttpClient: OkHttpClient,
-    unEditedRepositoryUrlAsString: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v2",
+    unEditedRepositoryUrlAsString: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v3",
     private val json: Json = Json {
         ignoreUnknownKeys = true
         prettyPrint = true

@@ -3,11 +3,11 @@ package com.github.reviversmc.themodindex.api.data
 /**
  * A manifest for a mod. The same mod meant for different mod loaders (e.g. Quilt, Fabric, Forge, etc.) will have different manifests.
  *
- * @param schemaVersion The version of the manifest schema.
+ * @param indexVersion The version of the manifest schema.
  * @param fancyName     The user readable name of the project.
  * @param author        The author/publisher of the mod.
  * @param license       The license of the mod, or a url if custom.
- * @param curseForgeId  The curseforge id of the mod, not the slug.
+ * @param curseForgeId  The curseforge id of the mod.
  * @param modrinthId    The modrinth id of the mod, not the slug.
  * @param links         A list of links related to the mod.
  * @param files         File versions for the mod.
@@ -16,11 +16,11 @@ package com.github.reviversmc.themodindex.api.data
  */
 @kotlinx.serialization.Serializable
 data class ManifestJson(
-    val schemaVersion: String,
+    val indexVersion: String,
     val fancyName: String?,
     val author: String,
     val license: String?,
-    val curseForgeId: String?,
+    val curseForgeId: Int?,
     val modrinthId: String?,
     val links: ManifestLinks?,
     val files: List<ManifestFile>
