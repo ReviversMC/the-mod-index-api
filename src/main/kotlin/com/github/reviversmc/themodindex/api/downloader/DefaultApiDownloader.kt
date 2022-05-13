@@ -50,7 +50,7 @@ class DefaultApiDownloader(
         indexJson ?: getOrDownloadIndexJson() //Ensure that we have a valid index.
 
         for (indexFile in indexJson?.files ?: return null) {
-            if (indexFile.identifier?.startsWith(genericIdentifier) == true) {
+            if (indexFile.identifier.startsWith(genericIdentifier)) {
 
                 val downloadResponse = okHttpClient.newCall(
                     Request.Builder().url(
