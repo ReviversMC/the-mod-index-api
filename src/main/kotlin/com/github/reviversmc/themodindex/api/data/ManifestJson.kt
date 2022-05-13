@@ -12,7 +12,7 @@ package com.github.reviversmc.themodindex.api.data
  * @param links         A list of links related to the mod.
  * @param files         File versions for the mod.
  * @author ReviversMC
- * @since 3.0.1
+ * @since 4.0.0
  */
 @kotlinx.serialization.Serializable
 data class ManifestJson(
