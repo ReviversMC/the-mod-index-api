@@ -45,7 +45,7 @@ interface ApiDownloader {
     /**
      * The manifest.json file for this repository.
      * @param genericIdentifier The generic identifier is "modLoader:modName".
-     * This is similar to the identifier in [IndexJson.IndexFile],
+     * This is similar to the identifier in [IndexJson.identifiers],
      * but does not contain the version.
      * @return The requested manifest.json file.
      * @author ReviversMC
@@ -55,7 +55,7 @@ interface ApiDownloader {
 
     /**
      * A [ManifestJson.ManifestFile] for the given identifier.
-     * This is not to be confused with the manifest.json file, which can be obtained with [.downloadManifestJson]
+     * This is not to be confused with the manifest.json file, which can be obtained with [downloadManifestJson]
      * @param identifier The identifier of the file entry to retrieve.
      * @return The requested manifest.json file.
      * @author ReviversMC

@@ -10,8 +10,10 @@ import kotlin.test.assertNull
 class ApiDownloadTest {
 
     private val endpoint = "https://fakelocalhost/fakeindex"
-    private val identifier = "bricks:fakemod:1.2.0+bricks-1.18.2"
-    private val schemaVersion = "3.0.0"
+    private val identifier =
+        "bricks:fakemod:1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
+    private val versionName = "1.2.0+bricks-1.18.2"
+    private val schemaVersion = "4.0.0"
 
     private val interceptor = MockInterceptor()
     private val okHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
@@ -43,8 +45,7 @@ class ApiDownloadTest {
 
         repeat(2) { //Repeat twice as this is called twice.
             interceptor.rule(
-                get,
-                url eq "${endpoint}/mods/${identifier.split(":")[0]}/${identifier.split(":")[1]}.json"
+                get, url eq "${endpoint}/mods/${identifier.split(":")[0]}/${identifier.split(":")[1]}.json"
             ) {
                 fakeManifestText?.let { respond(it).code(200) } ?: respond(500)
             }
@@ -54,14 +55,7 @@ class ApiDownloadTest {
             okHttpClient, endpoint
         )
         assertEquals(
-            IndexJson(
-                schemaVersion, listOf(
-                    IndexJson.IndexFile(
-                        identifier,
-                        "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
-                    )
-                )
-            ), infoDownloader.downloadIndexJson()
+            IndexJson(schemaVersion, listOf(identifier), null), infoDownloader.downloadIndexJson()
         )
 
         assertEquals(
@@ -74,19 +68,19 @@ class ApiDownloadTest {
                     )
                 ), listOf(
                     ManifestJson.ManifestFile(
-                        identifier.split(":")[2],
+                        versionName,
                         listOf("1.18.2"),
                         "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9",
                         emptyList(),
                         false
                     )
                 )
-            ), infoDownloader.downloadManifestJson(identifier) //We can pass an identifier as a generic identefier
+            ), infoDownloader.downloadManifestJson(identifier) //We can pass an identifier as a generic identifier
         )
 
         assertEquals(
             ManifestJson.ManifestFile(
-                identifier.split(":")[2],
+                versionName,
                 listOf("1.18.2"),
                 "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9",
                 emptyList(),
