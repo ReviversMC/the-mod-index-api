@@ -1,13 +1,10 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
 $dokka.location:com.github.reviversmc.themodindex.api.data////PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/index.html
-$dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson.IndexFile///PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/-index-file/index.html
-$dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson.IndexFile/IndexFile/#kotlin.String#kotlin.String/PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/-index-file/-index-file.html
-$dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson.IndexFile/identifier/#/PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/-index-file/identifier.html
-$dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson.IndexFile/sha512Hash/#/PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/-index-file/sha512-hash.html
 $dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson///PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/index.html
-$dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson/IndexJson/#kotlin.String#kotlin.collections.List[com.github.reviversmc.themodindex.api.data.IndexJson.IndexFile]/PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/-index-json.html
-$dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson/files/#/PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/files.html
+$dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson/IndexJson/#kotlin.String#kotlin.collections.List[kotlin.String]#kotlin.Long?/PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/-index-json.html
+$dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson/eolEpochTime/#/PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/eol-epoch-time.html
+$dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson/identifiers/#/PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/identifiers.html
 $dokka.location:com.github.reviversmc.themodindex.api.data/IndexJson/indexVersion/#/PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-index-json/index-version.html
 $dokka.location:com.github.reviversmc.themodindex.api.data/ManifestJson.ManifestFile///PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-manifest-json/-manifest-file/index.html
 $dokka.location:com.github.reviversmc.themodindex.api.data/ManifestJson.ManifestFile/ManifestFile/#kotlin.String#kotlin.collections.List[kotlin.String]#kotlin.String#kotlin.collections.List[kotlin.String]#kotlin.Boolean/PointingToDeclaration/the-mod-index-api/com.github.reviversmc.themodindex.api.data/-manifest-json/-manifest-file/-manifest-file.html
