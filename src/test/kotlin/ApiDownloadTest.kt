@@ -10,7 +10,8 @@ import kotlin.test.assertNull
 class ApiDownloadTest {
 
     private val endpoint = "https://fakelocalhost/fakeindex"
-    private val identifier = "bricks:fakemod:1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
+    private val identifier =
+        "bricks:fakemod:1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
     private val versionName = "1.2.0+bricks-1.18.2"
     private val schemaVersion = "4.0.0"
 
@@ -44,8 +45,7 @@ class ApiDownloadTest {
 
         repeat(2) { //Repeat twice as this is called twice.
             interceptor.rule(
-                get,
-                url eq "${endpoint}/mods/${identifier.split(":")[0]}/${identifier.split(":")[1]}.json"
+                get, url eq "${endpoint}/mods/${identifier.split(":")[0]}/${identifier.split(":")[1]}.json"
             ) {
                 fakeManifestText?.let { respond(it).code(200) } ?: respond(500)
             }
@@ -55,11 +55,7 @@ class ApiDownloadTest {
             okHttpClient, endpoint
         )
         assertEquals(
-            IndexJson(
-                schemaVersion, listOf(
-                    identifier
-                )
-            ), infoDownloader.downloadIndexJson()
+            IndexJson(schemaVersion, listOf(identifier), null), infoDownloader.downloadIndexJson()
         )
 
         assertEquals(

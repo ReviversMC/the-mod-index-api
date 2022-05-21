@@ -9,4 +9,4 @@ package com.github.reviversmc.themodindex.api.data
  * @since 5.0.0
  */
 @kotlinx.serialization.Serializable
-data class IndexJson(val indexVersion: String, val identifiers: List<String>)
+data class IndexJson(val indexVersion: String, val identifiers: List<String>, val eolEpochTime: Long?)
