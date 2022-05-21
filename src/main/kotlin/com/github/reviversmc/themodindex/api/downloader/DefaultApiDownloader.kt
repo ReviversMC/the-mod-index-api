@@ -18,7 +18,7 @@ import okhttp3.Request
  * */
 class DefaultApiDownloader(
     private val okHttpClient: OkHttpClient,
-    unEditedRepositoryUrlAsString: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v3",
+    unEditedRepositoryUrlAsString: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v4",
     private val json: Json = Json {
         ignoreUnknownKeys = true
         prettyPrint = true
@@ -29,9 +29,11 @@ class DefaultApiDownloader(
         private set //We don't want consumers to be able to set this directly.
 
     //We want to ensure that we don't have the "/" at the end of the URL for consistency.
-    override val repositoryUrlAsString: String = if (unEditedRepositoryUrlAsString.endsWith("/"))
-        unEditedRepositoryUrlAsString.substring(0, unEditedRepositoryUrlAsString.length - 1)
-    else unEditedRepositoryUrlAsString
+    override val repositoryUrlAsString: String =
+        if (unEditedRepositoryUrlAsString.endsWith("/")) unEditedRepositoryUrlAsString.substring(
+            0, unEditedRepositoryUrlAsString.length - 1
+        )
+        else unEditedRepositoryUrlAsString
 
     override fun downloadIndexJson(): IndexJson? {
         val downloadResponse = okHttpClient.newCall(
@@ -49,37 +51,39 @@ class DefaultApiDownloader(
     override fun downloadManifestJson(genericIdentifier: String): ManifestJson? {
         indexJson ?: getOrDownloadIndexJson() //Ensure that we have a valid index.
 
-        for (indexFile in indexJson?.files ?: return null) {
-            if (indexFile.identifier.startsWith(genericIdentifier)) {
+        //Assumes format of loader:name:hash, where everything is lowercase
+        val genericIdentifiers = indexJson?.identifiers?.map { it.substringBeforeLast(":") }?.distinct() ?: return null
 
-                val downloadResponse = okHttpClient.newCall(
-                    Request.Builder().url(
-                        "$repositoryUrlAsString/mods/${
-                            genericIdentifier.split(":")[0].lowercase()
-                        }/${
-                            genericIdentifier.split(":")[1].lowercase()
-                        }.json"
-                    ).build()
-                ).execute()
+        val lowerCasedGenericIdentifier = genericIdentifier.lowercase().split(":")
 
-                val manifestJson = downloadResponse.body?.string()?.let { json.decodeFromString<ManifestJson>(it) }
-                downloadResponse.close()
-                return manifestJson ?: continue
-            }
+        if (genericIdentifiers.contains("${lowerCasedGenericIdentifier[0]}:${lowerCasedGenericIdentifier[1]}")) {
+            val downloadResponse = okHttpClient.newCall(
+                Request.Builder().url(
+                    "$repositoryUrlAsString/mods/${
+                        lowerCasedGenericIdentifier[0]
+                    }/${
+                        lowerCasedGenericIdentifier[1]
+                    }.json"
+                ).build()
+            ).execute()
+
+            val manifestJson = downloadResponse.body?.string()?.let { json.decodeFromString<ManifestJson>(it) }
+            downloadResponse.close()
+            return manifestJson
         }
+
         return null
     }
 
     override fun downloadManifestFileEntry(identifier: String): ManifestJson.ManifestFile? {
         indexJson ?: getOrDownloadIndexJson() //Ensure that we have a valid index.
 
-        for (indexFile in indexJson?.files ?: return null) {
-            if (indexFile.identifier.equals(identifier, false)) { //"==" calls .equals anyway
-                val manifestJson = downloadManifestJson(identifier.lowercase())
-                    ?: return null //We can pass the whole identifier as the version will be ignored.
-                return manifestJson.files.firstOrNull {
-                    it.fileName.equals(identifier.split(":").last().lowercase(), true)
-                }
+        val lowerCaseIdentifier = identifier.lowercase()
+        if (indexJson?.identifiers?.contains(lowerCaseIdentifier) == true) {
+            val manifestJson = downloadManifestJson(lowerCaseIdentifier)
+                ?: return null //We can pass the whole identifier as the version will be ignored.
+            return manifestJson.files.firstOrNull {
+                it.sha512Hash == lowerCaseIdentifier.split(":").last()
             }
         }
         return null

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.reviversmc.themodindex.api"
-version = "4.0.0"
+version = "5.0.0"
 
 repositories {
     mavenCentral()
@@ -20,7 +20,7 @@ dependencies {
     testApi(kotlin("test"))
     testApi("com.squareup.okhttp3:okhttp:4.9.3")
     testApi("com.github.gmazzo:okhttp-mock:1.5.0")
-    testApi("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    testApi("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 }
 
 tasks {
