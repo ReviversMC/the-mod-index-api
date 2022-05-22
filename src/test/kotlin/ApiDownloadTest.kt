@@ -45,8 +45,6 @@ class ApiDownloadTest {
                 }
             }
         }
-
-        println("hi")
     }
 
     @BeforeEach
