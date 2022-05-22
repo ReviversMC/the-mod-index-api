@@ -2,10 +2,13 @@ package com.github.reviversmc.themodindex.api.downloader
 
 import com.github.reviversmc.themodindex.api.data.IndexJson
 import com.github.reviversmc.themodindex.api.data.ManifestJson
-import kotlinx.serialization.decodeFromString
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import okhttp3.MediaType
 import okhttp3.OkHttpClient
-import okhttp3.Request
+import retrofit2.Retrofit
+import retrofit2.awaitResponse
 
 /**
  * The default implementation of [DefaultApiDownloader]
@@ -15,10 +18,10 @@ import okhttp3.Request
  * @param json The [Json] instance to use for serialization. Default options: ignoreUnknownKeys = true, prettyPrint = true
  * @author ReviversMC
  * @since 1.0.0-2.0.0
- * */
+ */
 class DefaultApiDownloader(
     private val okHttpClient: OkHttpClient,
-    unEditedRepositoryUrlAsString: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v4",
+    unEditedRepositoryUrlAsString: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v4/",
     private val json: Json = Json {
         ignoreUnknownKeys = true
         prettyPrint = true
@@ -30,57 +33,87 @@ class DefaultApiDownloader(
 
     //We want to ensure that we don't have the "/" at the end of the URL for consistency.
     override val repositoryUrlAsString: String =
-        if (unEditedRepositoryUrlAsString.endsWith("/")) unEditedRepositoryUrlAsString.substring(
-            0, unEditedRepositoryUrlAsString.length - 1
-        )
-        else unEditedRepositoryUrlAsString
+        unEditedRepositoryUrlAsString + if (unEditedRepositoryUrlAsString.endsWith("/")) "" else "/"
 
+    @ExperimentalSerializationApi
+    private val indexApiCall =
+        Retrofit.Builder().addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
+            .baseUrl(repositoryUrlAsString).client(okHttpClient).build().create(IndexApiCall::class.java)
+
+
+    @ExperimentalSerializationApi
     override fun downloadIndexJson(): IndexJson? {
-        val downloadResponse = okHttpClient.newCall(
-            Request.Builder().url("$repositoryUrlAsString/mods/index.json").build()
-        ).execute()
-
-        indexJson = downloadResponse.body?.string()?.let { json.decodeFromString(it) }
-
-        downloadResponse.close()
+        indexJson = indexApiCall.callIndex().execute().body()
         return indexJson
     }
 
+    @ExperimentalSerializationApi
+    override suspend fun asyncDownloadIndexJson(): IndexJson? {
+        indexJson = indexApiCall.callIndex().awaitResponse().body()
+        return indexJson
+    }
+
+    @ExperimentalSerializationApi
     override fun getOrDownloadIndexJson(): IndexJson? = indexJson ?: downloadIndexJson()
 
+    @ExperimentalSerializationApi
+    override suspend fun getOrAsyncDownloadIndexJson(): IndexJson? = indexJson ?: asyncDownloadIndexJson()
+
+    @ExperimentalSerializationApi
     override fun downloadManifestJson(genericIdentifier: String): ManifestJson? {
         indexJson ?: getOrDownloadIndexJson() //Ensure that we have a valid index.
 
-        //Assumes format of loader:name:hash, where everything is lowercase
+        //Assumes format of loader:name:hash, where everything is lowercase. Grabs from indexJson.
         val genericIdentifiers = indexJson?.identifiers?.map { it.substringBeforeLast(":") }?.distinct() ?: return null
-
+        println(genericIdentifiers.toString())
         val lowerCasedGenericIdentifier = genericIdentifier.lowercase().split(":")
 
         if (genericIdentifiers.contains("${lowerCasedGenericIdentifier[0]}:${lowerCasedGenericIdentifier[1]}")) {
-            val downloadResponse = okHttpClient.newCall(
-                Request.Builder().url(
-                    "$repositoryUrlAsString/mods/${
-                        lowerCasedGenericIdentifier[0]
-                    }/${
-                        lowerCasedGenericIdentifier[1]
-                    }.json"
-                ).build()
-            ).execute()
-
-            val manifestJson = downloadResponse.body?.string()?.let { json.decodeFromString<ManifestJson>(it) }
-            downloadResponse.close()
-            return manifestJson
+            return indexApiCall.callManifest(lowerCasedGenericIdentifier[0], lowerCasedGenericIdentifier[1]).execute()
+                .body()
         }
 
         return null
     }
 
+    @ExperimentalSerializationApi
+    override suspend fun asyncDownloadManifestJson(genericIdentifier: String): ManifestJson? {
+        indexJson ?: getOrAsyncDownloadIndexJson() //Ensure that we have a valid index.
+
+        //Assumes format of loader:name:hash, where everything is lowercase. Grabs from indexJson.
+        val genericIdentifiers = indexJson?.identifiers?.map { it.substringBeforeLast(":") }?.distinct() ?: return null
+        val lowerCasedGenericIdentifier = genericIdentifier.lowercase().split(":")
+
+        if (genericIdentifiers.contains("${lowerCasedGenericIdentifier[0]}:${lowerCasedGenericIdentifier[1]}")) {
+            return indexApiCall.callManifest(lowerCasedGenericIdentifier[0], lowerCasedGenericIdentifier[1])
+                .awaitResponse().body()
+        }
+
+        return null
+    }
+
+    @ExperimentalSerializationApi
     override fun downloadManifestFileEntry(identifier: String): ManifestJson.ManifestFile? {
         indexJson ?: getOrDownloadIndexJson() //Ensure that we have a valid index.
 
         val lowerCaseIdentifier = identifier.lowercase()
         if (indexJson?.identifiers?.contains(lowerCaseIdentifier) == true) {
             val manifestJson = downloadManifestJson(lowerCaseIdentifier)
+                ?: return null //We can pass the whole identifier as the version will be ignored.
+            return manifestJson.files.firstOrNull {
+                it.sha512Hash == lowerCaseIdentifier.split(":").last()
+            }
+        }
+        return null
+    }
+
+    @ExperimentalSerializationApi
+    override suspend fun asyncDownloadManifestFileEntry(identifier: String): ManifestJson.ManifestFile? {
+        indexJson ?: getOrAsyncDownloadIndexJson() //Ensure that we have a valid index.
+
+        val lowerCaseIdentifier = identifier.lowercase()
+        if (indexJson?.identifiers?.contains(lowerCaseIdentifier) == true) {
+            val manifestJson = asyncDownloadManifestJson(lowerCaseIdentifier)
                 ?: return null //We can pass the whole identifier as the version will be ignored.
             return manifestJson.files.firstOrNull {
                 it.sha512Hash == lowerCaseIdentifier.split(":").last()

@@ -1,91 +1,125 @@
 import com.github.reviversmc.themodindex.api.data.IndexJson
 import com.github.reviversmc.themodindex.api.data.ManifestJson
 import com.github.reviversmc.themodindex.api.downloader.DefaultApiDownloader
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
-import okhttp3.mock.*
+import okhttp3.mockwebserver.Dispatcher
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.RecordedRequest
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
+
 class ApiDownloadTest {
 
-    private val endpoint = "https://fakelocalhost/fakeindex"
+    private val endpoint = "http://localhost" //Ensure not https!
+
     private val identifier =
         "bricks:fakemod:1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
-    private val versionName = "1.2.0+bricks-1.18.2"
     private val schemaVersion = "4.0.0"
 
-    private val interceptor = MockInterceptor()
-    private val okHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+    private val indexJsonText = this.javaClass.getResource("/fakeIndex/mods/index.json")?.readText()
+    private val manifestJsonText = this.javaClass.getResource("/fakeIndex/mods/bricks/fakemod.json")?.readText()
+
+    private val server = MockWebServer().apply {
+        dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                when (request.path) {
+                    "/mods/index.json" ->
+                        indexJsonText?.let {
+                            return MockResponse().setResponseCode(200).setBody(it)
+                        } ?: return MockResponse().setResponseCode(500)
+                    "/mods/bricks/fakemod.json" -> {
+                        manifestJsonText?.let {
+                            return MockResponse().setResponseCode(200).setBody(it)
+                        } ?: return MockResponse().setResponseCode(500)
+                    }
+                    else -> return MockResponse().setResponseCode(404)
+                }
+            }
+        }
+
+        println("hi")
+    }
+
+    @BeforeEach
+    fun `before each`() {
+        server.start()
+    }
+
+    @AfterEach
+    fun `after each`() {
+        server.shutdown()
+    }
+
+    private val okHttpClient = OkHttpClient.Builder().build()
 
     @Test
     fun `should return default manifest index`() {
-        val infoDownloader = DefaultApiDownloader(okHttpClient) //Use default repo url.
+        val apiDownloader = DefaultApiDownloader(okHttpClient) //Use default repo url.
         assertEquals(
-            "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v${schemaVersion.split(".")[0]}",
-            infoDownloader.repositoryUrlAsString
+            "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v${schemaVersion.split(".")[0]}/",
+            apiDownloader.repositoryUrlAsString
         )
     }
 
     @Test
     fun `should not return index info`() {
         //The basis of this test is to the index file is not automatically downloaded without an end user's consent.
-        val infoDownloader = DefaultApiDownloader(okHttpClient)
-        assertNull(infoDownloader.indexJson)
+        val apiDownloader = DefaultApiDownloader(okHttpClient, "$endpoint:${server.port}")
+        assertNull(apiDownloader.indexJson)
     }
 
+    @ExperimentalSerializationApi
     @Test
-    fun `should return fake mod info`() {
-        val fakeIndexText = this.javaClass.getResource("/fakeIndex/mods/index.json")?.readText()
-        val fakeManifestText = this.javaClass.getResource("/fakeIndex/mods/bricks/fakemod.json")?.readText()
+    fun `should return index info`() {
+        val apiDownloader = DefaultApiDownloader(okHttpClient, "$endpoint:${server.port}")
+        assertEquals(Json.decodeFromString<IndexJson>(indexJsonText!!), apiDownloader.getOrDownloadIndexJson())
+        assertEquals(Json.decodeFromString<IndexJson>(indexJsonText), apiDownloader.downloadIndexJson())
 
-        interceptor.rule(get, url eq "${endpoint}/mods/index.json") {
-            fakeIndexText?.let { respond(it).code(200) } ?: respond(500)
+        runBlocking {
+            assertEquals(Json.decodeFromString<IndexJson>(indexJsonText), apiDownloader.getOrAsyncDownloadIndexJson())
+            assertEquals(Json.decodeFromString<IndexJson>(indexJsonText), apiDownloader.asyncDownloadIndexJson())
         }
 
-        repeat(2) { //Repeat twice as this is called twice.
-            interceptor.rule(
-                get, url eq "${endpoint}/mods/${identifier.split(":")[0]}/${identifier.split(":")[1]}.json"
-            ) {
-                fakeManifestText?.let { respond(it).code(200) } ?: respond(500)
-            }
+        //Test for retaining of index info.
+        assertEquals(Json.decodeFromString<IndexJson>(indexJsonText), apiDownloader.indexJson)
+    }
+
+    @ExperimentalSerializationApi
+    @Test
+    fun `should return manifest info`() {
+        val apiDownloader = DefaultApiDownloader(okHttpClient, "$endpoint:${server.port}")
+
+        assertEquals(
+            Json.decodeFromString<ManifestJson>(manifestJsonText!!),
+            apiDownloader.downloadManifestJson(identifier)
+        )
+        runBlocking {
+            assertEquals(
+                Json.decodeFromString<ManifestJson>(manifestJsonText),
+                apiDownloader.asyncDownloadManifestJson(identifier)
+            )
         }
+    }
 
-        val infoDownloader = DefaultApiDownloader(
-            okHttpClient, endpoint
-        )
-        assertEquals(
-            IndexJson(schemaVersion, listOf(identifier), null), infoDownloader.downloadIndexJson()
-        )
+    @ExperimentalSerializationApi
+    @Test
+    fun `should return file info`() {
+        val apiDownloader = DefaultApiDownloader(okHttpClient, "$endpoint:${server.port}")
 
-        assertEquals(
-            ManifestJson(
-                schemaVersion, "Fake Mod", "Fake Author", "AGPL-3.0", null, null, ManifestJson.ManifestLinks(
-                    null, "https://github.com/ReviversMC/the-mod-index-api/fakeIndex", listOf(
-                        ManifestJson.ManifestLinks.OtherLink(
-                            "Discord", "https://discord.gg/6bTGYFppfz"
-                        )
-                    )
-                ), listOf(
-                    ManifestJson.ManifestFile(
-                        versionName,
-                        listOf("1.18.2"),
-                        "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9",
-                        emptyList(),
-                        false
-                    )
-                )
-            ), infoDownloader.downloadManifestJson(identifier) //We can pass an identifier as a generic identifier
-        )
+        val fileInfo = Json.decodeFromString<ManifestJson>(manifestJsonText!!).files.first()
 
-        assertEquals(
-            ManifestJson.ManifestFile(
-                versionName,
-                listOf("1.18.2"),
-                "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9",
-                emptyList(),
-                false
-            ), infoDownloader.downloadManifestFileEntry(identifier)
-        )
+        assertEquals(fileInfo, apiDownloader.downloadManifestFileEntry(identifier))
+        runBlocking {
+            assertEquals(fileInfo, apiDownloader.asyncDownloadManifestFileEntry(identifier))
+        }
     }
 }
