@@ -11,10 +11,10 @@ interface IndexApiCall {
     /**
      * Calls the index.json path of the mod index
      */
-    @GET("mods/index.json")
+    @GET("/mods/index.json")
      fun callIndex(): Call<IndexJson>
 
-    @GET("mods/{modLoader}/{modName}.json")
+    @GET("/mods/{modLoader}/{modName}.json")
      fun callManifest(@Path("modLoader") modLoader: String, @Path("modName") modName: String): Call<ManifestJson>
 
 }
