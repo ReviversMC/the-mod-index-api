@@ -65,7 +65,6 @@ class DefaultApiDownloader(
 
         //Assumes format of loader:name:hash, where everything is lowercase. Grabs from indexJson.
         val genericIdentifiers = indexJson?.identifiers?.map { it.substringBeforeLast(":") }?.distinct() ?: return null
-        println(genericIdentifiers.toString())
         val lowerCasedGenericIdentifier = genericIdentifier.lowercase().split(":")
 
         if (genericIdentifiers.contains("${lowerCasedGenericIdentifier[0]}:${lowerCasedGenericIdentifier[1]}")) {
