@@ -16,7 +16,7 @@ repositories {
 dependencies {
     api("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     api("com.squareup.retrofit2:retrofit:2.9.0")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2")
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     testApi(kotlin("test"))
