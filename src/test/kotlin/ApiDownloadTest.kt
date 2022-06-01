@@ -5,6 +5,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -32,10 +33,9 @@ class ApiDownloadTest {
         dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 when (request.path) {
-                    "/$schemaMajor/mods/index.json" ->
-                        indexJsonText?.let {
-                            return MockResponse().setResponseCode(200).setBody(it)
-                        } ?: return MockResponse().setResponseCode(500)
+                    "/$schemaMajor/mods/index.json" -> indexJsonText?.let {
+                        return MockResponse().setResponseCode(200).setBody(it)
+                    } ?: return MockResponse().setResponseCode(500)
                     "/$schemaMajor/mods/bricks/fakemod.json" -> {
                         manifestJsonText?.let {
                             return MockResponse().setResponseCode(200).setBody(it)
@@ -63,8 +63,7 @@ class ApiDownloadTest {
     fun `should return default endpoint`() {
         val apiDownloader = DefaultApiDownloader(okHttpClient) //Use default repo url.
         assertEquals(
-            "https://raw.githubusercontent.com/ReviversMC/the-mod-index/",
-            apiDownloader.formattedBaseUrl
+            "https://raw.githubusercontent.com/ReviversMC/the-mod-index/", apiDownloader.formattedBaseUrl
         )
     }
 
@@ -82,7 +81,17 @@ class ApiDownloadTest {
 
         Imagine if we forgot to do it on both the api and the index :grimacing:
          */
+
         assertEquals(schemaMajor, "v${indexJson.indexVersion.substringBefore(".")}")
+
+        val manualRequest = okHttpClient.newCall(
+            Request.Builder().url("${apiDownloader.formattedBaseUrl}HEAD/mods/index.json").build()
+        ).execute()
+
+        assertEquals(
+            schemaMajor,
+            "v${Json.decodeFromString<IndexJson>(manualRequest.body!!.string()).indexVersion.substringBefore(".")}"
+        )
     }
 
     @Test
@@ -109,8 +118,7 @@ class ApiDownloadTest {
         val apiDownloader = DefaultApiDownloader(okHttpClient, "$endpoint:${server.port}")
 
         assertEquals(
-            Json.decodeFromString<ManifestJson>(manifestJsonText!!),
-            apiDownloader.downloadManifestJson(identifier)
+            Json.decodeFromString<ManifestJson>(manifestJsonText!!), apiDownloader.downloadManifestJson(identifier)
         )
     }
 
