@@ -42,6 +42,7 @@ interface ApiDownloader {
      * @author ReviversMC
      * @since 5.1.0
      */
+    @Deprecated("This method offers no advantages over #downloadIndexJson. Use that instead. To be removed in next major release (6.0.0)", ReplaceWith("downloadIndexJson()"))
     @ExperimentalSerializationApi
     suspend fun asyncDownloadIndexJson(): IndexJson?
 
@@ -60,6 +61,7 @@ interface ApiDownloader {
      * @author ReviversMC
      * @since 5.1.0
      */
+    @Deprecated("This method offers no advantages over #getOrDownloadIndexJson. Use that instead. To be removed in next major release (6.0.0)", ReplaceWith("getOrDownloadIndexJson()"))
     @ExperimentalSerializationApi
     suspend fun getOrAsyncDownloadIndexJson(): IndexJson?
 
@@ -84,6 +86,7 @@ interface ApiDownloader {
      * @author ReviversMC
      * @since 5.1.0
      */
+    @Deprecated("This method offers no advantages over #downloadManifestJson. Use that instead. To be removed in next major release (6.0.0)", ReplaceWith("downloadManifestJson(genericIdentifier)"))
     @ExperimentalSerializationApi
     suspend fun asyncDownloadManifestJson(genericIdentifier: String): ManifestJson?
 
@@ -106,6 +109,7 @@ interface ApiDownloader {
      * @author ReviversMC
      * @since 5.1.0
      */
+    @Deprecated("This method offers no advantages over #downloadManifestFileEntry. Use that instead. To be removed in next major release (6.0.0)", ReplaceWith("downloadManifestFileEntry(identifier)"))
     @ExperimentalSerializationApi
     suspend fun asyncDownloadManifestFileEntry(identifier: String): ManifestJson.ManifestFile?
 }
