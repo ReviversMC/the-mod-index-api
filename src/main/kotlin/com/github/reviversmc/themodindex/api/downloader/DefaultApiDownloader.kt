@@ -20,9 +20,9 @@ import retrofit2.awaitResponse
  * @since 1.0.0-2.0.0
  */
 class DefaultApiDownloader(
-    private val okHttpClient: OkHttpClient,
+    okHttpClient: OkHttpClient,
     unEditedRepositoryUrlAsString: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v4/",
-    private val json: Json = Json {
+    json: Json = Json {
         ignoreUnknownKeys = true
         prettyPrint = true
     }
@@ -47,6 +47,10 @@ class DefaultApiDownloader(
         return indexJson
     }
 
+    @Deprecated(
+        "This method offers no advantages over #downloadIndexJson. Use that instead. To be removed in next major release (6.0.0)",
+        replaceWith = ReplaceWith("downloadIndexJson()")
+    )
     @ExperimentalSerializationApi
     override suspend fun asyncDownloadIndexJson(): IndexJson? {
         indexJson = indexApiCall.callIndex().awaitResponse().body()
@@ -56,6 +60,10 @@ class DefaultApiDownloader(
     @ExperimentalSerializationApi
     override fun getOrDownloadIndexJson(): IndexJson? = indexJson ?: downloadIndexJson()
 
+    @Deprecated(
+        "This method offers no advantages over #getOrDownloadIndexJson. Use that instead. To be removed in next major release (6.0.0)",
+        replaceWith = ReplaceWith("getOrDownloadIndexJson()")
+    )
     @ExperimentalSerializationApi
     override suspend fun getOrAsyncDownloadIndexJson(): IndexJson? = indexJson ?: asyncDownloadIndexJson()
 
@@ -75,6 +83,10 @@ class DefaultApiDownloader(
         return null
     }
 
+    @Deprecated(
+        "This method offers no advantages over #downloadManifestJson. Use that instead. To be removed in next major release (6.0.0)",
+        replaceWith = ReplaceWith("downloadManifestJson(genericIdentifier)")
+    )
     @ExperimentalSerializationApi
     override suspend fun asyncDownloadManifestJson(genericIdentifier: String): ManifestJson? {
         indexJson ?: getOrAsyncDownloadIndexJson() //Ensure that we have a valid index.
@@ -106,6 +118,10 @@ class DefaultApiDownloader(
         return null
     }
 
+    @Deprecated(
+        "This method offers no advantages over #downloadManifestFileEntry. Use that instead. To be removed in next major release (6.0.0)",
+        replaceWith = ReplaceWith("downloadManifestFileEntry(identifier)")
+    )
     @ExperimentalSerializationApi
     override suspend fun asyncDownloadManifestFileEntry(identifier: String): ManifestJson.ManifestFile? {
         indexJson ?: getOrAsyncDownloadIndexJson() //Ensure that we have a valid index.
