@@ -15,7 +15,7 @@ interface ApiDownloader {
      * The url of the repository that this downloader is for.
      * @return the url of the repository that this downloader is for.
      * @author ReviversMC
-     * @since 1.0.0-2.0.0
+     * @since 6.0.0
      */
     val formattedBaseUrl: String
 

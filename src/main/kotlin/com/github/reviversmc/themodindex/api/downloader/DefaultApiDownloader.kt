@@ -11,12 +11,11 @@ import retrofit2.Retrofit
 
 /**
  * The default implementation of [DefaultApiDownloader]
- * @param okHttpClient The [OkHttpClient] to use for the download
- * @param baseUrl The base URL of the repository to download from. The repository should follow the layout as specified by [https://github.com/reviversmc/the-mod-index]
- * The url will be processed to remove the "/" at the end of the url, if found.
+ * @param okHttpClient The [OkHttpClient] to use for the download. Defaults to a new instance of [OkHttpClient]
+ * @param baseUrl The base URL of the repository to download from. The repository should follow the layout as specified by [the-mod-index](https://github.com/reviversmc/the-mod-index/), Default: https://github.com/reviversmc/the-mod-index/
  * @param json The [Json] instance to use for serialization. Default options: ignoreUnknownKeys = true, prettyPrint = true
  * @author ReviversMC
- * @since 1.0.0-2.0.0
+ * @since 6.0.0
  */
 class DefaultApiDownloader(
     okHttpClient: OkHttpClient = OkHttpClient.Builder().build(),
