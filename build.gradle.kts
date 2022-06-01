@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.reviversmc.themodindex.api"
-version = "5.1.2"
+version = "6.0.0"
 
 repositories {
     mavenCentral()
@@ -16,12 +16,10 @@ repositories {
 dependencies {
     api("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     api("com.squareup.retrofit2:retrofit:2.9.0")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2")
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     testApi(kotlin("test"))
     testApi("com.squareup.okhttp3:mockwebserver:4.9.3")
-    testApi("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 }
 
 tasks {
