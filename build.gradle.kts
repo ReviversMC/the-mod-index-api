@@ -19,7 +19,7 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     testApi(kotlin("test"))
-    testApi("com.squareup.okhttp3:mockwebserver:4.9.3")
+    testApi("com.squareup.okhttp3:mockwebserver:4.10.0")
 }
 
 tasks {
