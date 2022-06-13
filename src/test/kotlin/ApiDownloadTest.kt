@@ -98,7 +98,7 @@ class ApiDownloadTest {
     fun `should not return index info`() {
         //The basis of this test is to the index file is not automatically downloaded without an end user's consent.
         val apiDownloader = DefaultApiDownloader(okHttpClient, "$endpoint:${server.port}")
-        assertNull(apiDownloader.indexJson)
+        assertNull(apiDownloader.cachedIndexJson)
     }
 
     @ExperimentalSerializationApi
@@ -109,7 +109,7 @@ class ApiDownloadTest {
         assertEquals(Json.decodeFromString<IndexJson>(indexJsonText), apiDownloader.downloadIndexJson())
 
         //Test for retaining of index info.
-        assertEquals(Json.decodeFromString<IndexJson>(indexJsonText), apiDownloader.indexJson)
+        assertEquals(Json.decodeFromString<IndexJson>(indexJsonText), apiDownloader.cachedIndexJson)
     }
 
     @ExperimentalSerializationApi

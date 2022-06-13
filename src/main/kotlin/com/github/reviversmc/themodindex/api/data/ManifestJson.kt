@@ -12,7 +12,7 @@ package com.github.reviversmc.themodindex.api.data
  * @param links         A list of links related to the mod.
  * @param files         File versions for the mod.
  * @author ReviversMC
- * @since 4.0.0
+ * @since 6.1.0
  */
 @kotlinx.serialization.Serializable
 data class ManifestJson(
@@ -23,50 +23,50 @@ data class ManifestJson(
     val curseForgeId: Int?,
     val modrinthId: String?,
     val links: ManifestLinks?,
-    val files: List<ManifestFile>
-) {
+    val files: List<VersionFile>,
+)
+
+/**
+ * A couple of links related to the mod.
+ *
+ * @param issue         A link to the mod's issue tracker.
+ * @param sourceControl A link to the mod's source control, no mirrors. Remove endings like ".git".
+ * @param others        A list of other links related to the mod.
+ * @author ReviversMC
+ * @since 6.1.0
+ */
+@kotlinx.serialization.Serializable
+data class ManifestLinks(val issue: String?, val sourceControl: String?, val others: List<OtherLink>) {
 
     /**
-     * A list of links related to the mod.
+     * A list of other links related to the mod.
      *
-     * @param issue         A link to the mod's issue tracker.
-     * @param sourceControl A link to the mod's source control, no mirrors. Remove endings like ".git".
-     * @param others        A list of other links related to the mod.
+     * @param linkName The type of link, like "discord", "irc", or "GitHub wiki"
+     * @param url      The url of the link.
      * @author ReviversMC
-     * @since 1.0.0-2.0.0
+     * @since 6.1.0
      */
     @kotlinx.serialization.Serializable
-    data class ManifestLinks(val issue: String?, val sourceControl: String?, val others: List<OtherLink>) {
-
-        /**
-         * A list of other links related to the mod.
-         *
-         * @param linkName The type of link, like "discord", "irc", or "GitHub wiki"
-         * @param url      The url of the link.
-         * @author ReviversMC
-         * @since 3.0.1
-         */
-        @kotlinx.serialization.Serializable
-        data class OtherLink(val linkName: String, val url: String)
-    }
-
-    /**
-     * File versions for the mod.
-     *
-     * @param fileName     The name of the file, should not be used for version checking.
-     * @param mcVersions   A list of Minecraft versions the file is compatible with.
-     * @param sha512Hash     The sha512 hash of the file.
-     * @param downloadUrls A list of urls to download the file from.
-     * @param curseDownloadAvailable Whether the file is available on Curse. A further api call to CF is required to get the download url.
-     * @author ReviversMC
-     * @since 3.0.1
-     */
-    @kotlinx.serialization.Serializable
-    data class ManifestFile(
-        val fileName: String,
-        val mcVersions: List<String>,
-        val sha512Hash: String,
-        val downloadUrls: List<String>,
-        val curseDownloadAvailable: Boolean
-    )
+    data class OtherLink(val linkName: String, val url: String)
 }
+
+/**
+ * File versions for the mod.
+ *
+ * @param fileName     The name of the file, should not be used for version checking.
+ * @param mcVersions   A list of Minecraft versions the file is compatible with.
+ * @param sha512Hash     The sha512 hash of the file.
+ * @param downloadUrls A list of urls to download the file from.
+ * @param curseDownloadAvailable Whether the file is available on Curse. A further api call to CF is required to get the download url.
+ * @author ReviversMC
+ * @since 6.1.0
+ */
+@kotlinx.serialization.Serializable
+data class VersionFile(
+    val fileName: String,
+    val mcVersions: List<String>,
+    val sha512Hash: String,
+    val downloadUrls: List<String>,
+    val curseDownloadAvailable: Boolean,
+)
+

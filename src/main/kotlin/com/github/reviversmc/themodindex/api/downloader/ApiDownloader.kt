@@ -2,70 +2,63 @@ package com.github.reviversmc.themodindex.api.downloader
 
 import com.github.reviversmc.themodindex.api.data.IndexJson
 import com.github.reviversmc.themodindex.api.data.ManifestJson
-import kotlinx.serialization.ExperimentalSerializationApi
+import com.github.reviversmc.themodindex.api.data.VersionFile
+import java.io.IOException
 
 /**
- * The downloader for accessing the-mod-index, or similarly structured indexes.
+ * The downloader for accessing [the-mod-index](https://github.com/reviversmc/the-mod-index), or similarly structured indexes.
  * @author ReviversMC
  * @since 1.0.0-2.0.0
  */
 interface ApiDownloader {
 
     /**
-     * The url of the repository that this downloader is for.
-     * @return the url of the repository that this downloader is for.
+     * The base url the current instance of the [ApiDownloader] is targeting.
      * @author ReviversMC
      * @since 6.0.0
      */
     val formattedBaseUrl: String
 
     /**
-     * The index.json file for this repository. Only retrieves the index.json file locally if it has already been downloaded.
-     * @return the index.json file for this repository.
+     * Retrieves the [IndexJson] file from cache if it has already been downloaded, or null if no cache exists.
      * @author ReviversMC
-     * @since 1.0.0-2.0.0
+     * @since 6.1.0
      */
-    val indexJson: IndexJson?
+    val cachedIndexJson: IndexJson?
 
     /**
-     * The manifest.json file for this repository. Always re-downloads the index.json file. Runs synchronously.
-     * @return The manifest.json file for this repository.
+     * Re-downloads and caches the [IndexJson] file from the remote repository. Null if the download fails.
+     * @throws [IOException] if the download fails.
      * @author ReviversMC
      * @since 1.0.0-2.0.0
      */
-    @ExperimentalSerializationApi
+    @kotlin.jvm.Throws(IOException::class)
     fun downloadIndexJson(): IndexJson?
 
     /**
-     * The manifest.json file for this repository. Downloads the index.json file if it has not already been downloaded. Runs synchronously.
-     * @return The manifest.json file for this repository.
+     * Retrieves the [IndexJson] file from cache if it has already been downloaded, or attempts to download and cache it from the remote repository if no cache exists
+     * @throws [IOException] if the download fails.
      * @author ReviversMC
      * @since 1.0.0-2.0.0
      */
-    @ExperimentalSerializationApi
+    @kotlin.jvm.Throws(IOException::class)
     fun getOrDownloadIndexJson(): IndexJson?
 
     /**
-     * The manifest.json file for this repository. Runs synchronously.
-     * @param genericIdentifier The generic identifier is "modLoader:modName".
-     * This is similar to the identifier in [IndexJson.identifiers],
-     * but does not contain the version.
-     * @return The requested manifest.json file.
+     * Retrieves the requested [ManifestJson] file for the given [genericIdentifier]. The format for a generic identifier is "modLoader:modName".
+     * @throws [IOException] if the download fails.
      * @author ReviversMC
      * @since 1.0.0-2.0.0
      */
-    @ExperimentalSerializationApi
+    @kotlin.jvm.Throws(IOException::class)
     fun downloadManifestJson(genericIdentifier: String): ManifestJson?
 
-
     /**
-     * A [ManifestJson.ManifestFile] for the given identifier. Runs synchronously.
-     * This is not to be confused with the manifest.json file, which can be obtained with [downloadManifestJson]
-     * @param identifier The identifier of the file entry to retrieve.
-     * @return The requested manifest.json file.
+     * Retrieves the requested [VersionFile] for the given [identifier].
+     * @throws [IOException] if the download fails.
      * @author ReviversMC
-     * @since 1.0.0-2.0.0
+     * @since 6.1.0
      */
-    @ExperimentalSerializationApi
-    fun downloadManifestFileEntry(identifier: String): ManifestJson.ManifestFile?
+    @kotlin.jvm.Throws(IOException::class)
+    fun downloadManifestFileEntry(identifier: String): VersionFile?
 }
