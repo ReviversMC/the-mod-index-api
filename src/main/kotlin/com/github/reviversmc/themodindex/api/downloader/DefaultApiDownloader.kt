@@ -2,12 +2,14 @@ package com.github.reviversmc.themodindex.api.downloader
 
 import com.github.reviversmc.themodindex.api.data.IndexJson
 import com.github.reviversmc.themodindex.api.data.ManifestJson
+import com.github.reviversmc.themodindex.api.data.VersionFile
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import java.io.IOException
 
 /**
  * The default implementation of [DefaultApiDownloader]
@@ -26,53 +28,49 @@ class DefaultApiDownloader(
     }
 ) : ApiDownloader {
 
-    override var indexJson: IndexJson? = null
-        private set //We don't want consumers to be able to set this directly.
+    override var cachedIndexJson: IndexJson? = null
+        private set // We don't want consumers to be able to set this directly.
 
-    //We want to ensure that we don't have the "/" at the end of the URL for consistency.
+    // We want to ensure that we don't have the "/" at the end of the URL for consistency.
     override val formattedBaseUrl: String =
         baseUrl + if (baseUrl.endsWith("/")) "" else "/"
 
-    @ExperimentalSerializationApi
+    @OptIn(ExperimentalSerializationApi::class)
     private val indexApiCall =
         Retrofit.Builder().addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
             .baseUrl(formattedBaseUrl).client(okHttpClient).build().create(IndexApiCall::class.java)
 
 
-    @ExperimentalSerializationApi
     override fun downloadIndexJson(): IndexJson? {
-        indexJson = indexApiCall.callIndex().execute().body()
-        return indexJson
+        cachedIndexJson = indexApiCall.index().execute().body()
+        return cachedIndexJson
     }
 
-    @ExperimentalSerializationApi
-    override fun getOrDownloadIndexJson(): IndexJson? = indexJson ?: downloadIndexJson()
+    override fun getOrDownloadIndexJson(): IndexJson? = cachedIndexJson ?: downloadIndexJson()
 
 
-    @ExperimentalSerializationApi
     override fun downloadManifestJson(genericIdentifier: String): ManifestJson? {
-        indexJson ?: getOrDownloadIndexJson() //Ensure that we have a valid index.
+        getOrDownloadIndexJson() // Try to ensure that we have a valid index.
 
-        //Assumes format of loader:name:hash, where everything is lowercase. Grabs from indexJson.
-        val genericIdentifiers = indexJson?.identifiers?.map { it.substringBeforeLast(":") }?.distinct() ?: return null
+        // Assumes format of loader:name:hash, where everything is lowercase. Grabs from indexJson.
+        val genericIdentifiers = cachedIndexJson?.identifiers?.map { it.substringBeforeLast(":") }?.distinct() ?: throw IOException("Could not get generic identifiers from index.json at base url of $formattedBaseUrl")
         val lowerCasedGenericIdentifier = genericIdentifier.lowercase().split(":")
 
         if (genericIdentifiers.contains("${lowerCasedGenericIdentifier[0]}:${lowerCasedGenericIdentifier[1]}")) {
-            return indexApiCall.callManifest(lowerCasedGenericIdentifier[0], lowerCasedGenericIdentifier[1]).execute()
+            return indexApiCall.manifest(lowerCasedGenericIdentifier[0], lowerCasedGenericIdentifier[1]).execute()
                 .body()
         }
 
         return null
     }
 
-    @ExperimentalSerializationApi
-    override fun downloadManifestFileEntry(identifier: String): ManifestJson.ManifestFile? {
-        indexJson ?: getOrDownloadIndexJson() //Ensure that we have a valid index.
+    override fun downloadManifestFileEntry(identifier: String): VersionFile? {
+        getOrDownloadIndexJson() // Try to ensure that we have a valid index.
 
         val lowerCaseIdentifier = identifier.lowercase()
-        if (indexJson?.identifiers?.contains(lowerCaseIdentifier) == true) {
-            val manifestJson = downloadManifestJson(lowerCaseIdentifier)
-                ?: return null //We can pass the whole identifier as the version will be ignored.
+        if (cachedIndexJson?.identifiers?.contains(lowerCaseIdentifier) == true) {
+            val manifestJson = downloadManifestJson(lowerCaseIdentifier) // We can pass the whole identifier as the hash will be ignored.
+                ?: throw IOException("Could not get generic identifiers from index.json at base url of $formattedBaseUrl")
             return manifestJson.files.firstOrNull {
                 it.sha512Hash == lowerCaseIdentifier.split(":").last()
             }
