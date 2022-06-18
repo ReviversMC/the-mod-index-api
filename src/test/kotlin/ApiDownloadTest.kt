@@ -1,7 +1,6 @@
 import com.github.reviversmc.themodindex.api.data.IndexJson
 import com.github.reviversmc.themodindex.api.data.ManifestJson
 import com.github.reviversmc.themodindex.api.downloader.DefaultApiDownloader
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
@@ -17,17 +16,16 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-
 class ApiDownloadTest {
 
-    private val endpoint = "http://localhost" //Ensure not https!
+    private val baseUrl = "http://localhost" // Ensure not https!
 
     private val identifier =
-        "bricks:fakemod:1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
+        "bricks:fake-mod:1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
     private val schemaMajor = "v4"
 
-    private val indexJsonText = this.javaClass.getResource("/fakeIndex/mods/index.json")?.readText()
-    private val manifestJsonText = this.javaClass.getResource("/fakeIndex/mods/bricks/fakemod.json")?.readText()
+    private val indexJsonText = javaClass.getResource("/fakeIndex/mods/index.json")?.readText()
+    private val manifestJsonText = javaClass.getResource("/fakeIndex/mods/bricks/fake-mod.json")?.readText()
 
     private val server = MockWebServer().apply {
         dispatcher = object : Dispatcher() {
@@ -36,7 +34,7 @@ class ApiDownloadTest {
                     "/$schemaMajor/mods/index.json" -> indexJsonText?.let {
                         return MockResponse().setResponseCode(200).setBody(it)
                     } ?: return MockResponse().setResponseCode(500)
-                    "/$schemaMajor/mods/bricks/fakemod.json" -> {
+                    "/$schemaMajor/mods/bricks/fake-mod.json" -> {
                         manifestJsonText?.let {
                             return MockResponse().setResponseCode(200).setBody(it)
                         } ?: return MockResponse().setResponseCode(500)
@@ -57,26 +55,23 @@ class ApiDownloadTest {
         server.shutdown()
     }
 
-    private val okHttpClient = OkHttpClient.Builder().build()
-
     @Test
-    fun `should return default endpoint`() {
-        val apiDownloader = DefaultApiDownloader(okHttpClient) //Use default repo url.
+    fun `should return default baseUrl`() {
+        val apiDownloader = DefaultApiDownloader() // Use default repo url.
         assertEquals(
             "https://raw.githubusercontent.com/ReviversMC/the-mod-index/", apiDownloader.formattedBaseUrl
         )
     }
 
-    @ExperimentalSerializationApi
     @Test
-    fun `index default endpoint test`() {
-        val apiDownloader = DefaultApiDownloader(okHttpClient)
+    fun `index default baseUrl test`() {
+        val apiDownloader = DefaultApiDownloader()
 
         val indexJson = apiDownloader.getOrDownloadIndexJson()
         assertNotNull(indexJson)
 
         /*
-        Check that we actually remembered to bump the api endpoint.
+        Check that we actually remembered to bump the api baseUrl.
         If this is true, we can assume that value in the manifests are/will be correct.
 
         Imagine if we forgot to do it on both the api and the index :grimacing:
@@ -84,7 +79,7 @@ class ApiDownloadTest {
 
         assertEquals(schemaMajor, "v${indexJson.indexVersion.substringBefore(".")}")
 
-        val manualRequest = okHttpClient.newCall(
+        val manualRequest = OkHttpClient.Builder().build().newCall(
             Request.Builder().url("${apiDownloader.formattedBaseUrl}HEAD/mods/index.json").build()
         ).execute()
 
@@ -96,36 +91,33 @@ class ApiDownloadTest {
 
     @Test
     fun `should not return index info`() {
-        //The basis of this test is to the index file is not automatically downloaded without an end user's consent.
-        val apiDownloader = DefaultApiDownloader(okHttpClient, "$endpoint:${server.port}")
+        // The basis of this test is to the index file is not automatically downloaded without an end user's consent.
+        val apiDownloader = DefaultApiDownloader(baseUrl = "$baseUrl:${server.port}")
         assertNull(apiDownloader.cachedIndexJson)
     }
 
-    @ExperimentalSerializationApi
     @Test
     fun `should return index info`() {
-        val apiDownloader = DefaultApiDownloader(okHttpClient, "$endpoint:${server.port}")
+        val apiDownloader = DefaultApiDownloader(baseUrl = "$baseUrl:${server.port}")
         assertEquals(Json.decodeFromString<IndexJson>(indexJsonText!!), apiDownloader.getOrDownloadIndexJson())
         assertEquals(Json.decodeFromString<IndexJson>(indexJsonText), apiDownloader.downloadIndexJson())
 
-        //Test for retaining of index info.
+        // Test for retaining of index info.
         assertEquals(Json.decodeFromString<IndexJson>(indexJsonText), apiDownloader.cachedIndexJson)
     }
 
-    @ExperimentalSerializationApi
     @Test
     fun `should return manifest info`() {
-        val apiDownloader = DefaultApiDownloader(okHttpClient, "$endpoint:${server.port}")
+        val apiDownloader = DefaultApiDownloader(baseUrl = "$baseUrl:${server.port}")
 
         assertEquals(
             Json.decodeFromString<ManifestJson>(manifestJsonText!!), apiDownloader.downloadManifestJson(identifier)
         )
     }
 
-    @ExperimentalSerializationApi
     @Test
     fun `should return file info`() {
-        val apiDownloader = DefaultApiDownloader(okHttpClient, "$endpoint:${server.port}")
+        val apiDownloader = DefaultApiDownloader(baseUrl = "$baseUrl:${server.port}")
 
         val fileInfo = Json.decodeFromString<ManifestJson>(manifestJsonText!!).files.first()
 

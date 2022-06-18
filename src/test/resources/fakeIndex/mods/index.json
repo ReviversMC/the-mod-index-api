@@ -1,7 +1,7 @@
 {
-  "indexVersion": "4.0.0",
+  "indexVersion": "4.1.0",
   "identifiers": [
-    "bricks:fakemod:1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
+    "bricks:fake-mod:1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
   ],
   "eolEpochTime": null
 }
