@@ -60,8 +60,9 @@ data class ManifestLinks(val issue: String?, val sourceControl: String?, val oth
  * @param sha512Hash     The sha512 hash of the file.
  * @param downloadUrls A list of urls to download the file from.
  * @param curseDownloadAvailable Whether the file is available on Curse. A further api call to CF is required to get the download url.
+ * @param relationsToOtherMods The relations (i.e. dependencies/conflicts) to other mods.
  * @author ReviversMC
- * @since 6.1.0
+ * @since 7.2.0
  */
 @kotlinx.serialization.Serializable
 data class VersionFile(
@@ -70,5 +71,17 @@ data class VersionFile(
     val sha512Hash: String,
     val downloadUrls: List<String>,
     val curseDownloadAvailable: Boolean,
+    val relationsToOtherMods: RelationsToOtherMods,
 )
+
+/**
+ * Relations (i.e. dependencies/conflicts) to other mods, in the form of generic identifiers (i.e. "{mod loader}:{mod name}").
+ *
+ * @param required The generic identifiers of the mods required by this mod.
+ * @param incompatible The generic identifiers of the mods incompatible with this mod.
+ * @author ReviversMC
+ * @since 7.2.0
+ */
+@kotlinx.serialization.Serializable
+data class RelationsToOtherMods(val required: List<String>, val incompatible: List<String>)
 
