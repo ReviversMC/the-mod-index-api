@@ -5,7 +5,7 @@ package com.github.reviversmc.themodindex.api.data
  *
  * @param indexVersion The version of the manifest schema.
  * @param genericIdentifier The generic identifier of the manifest (i.e. "{mod loader}:{mod name}")
- * @param fancyName     The user readable name of the project.
+ * @param fancyName     A user readable name of the project.
  * @param author        The author/publisher of the mod.
  * @param license       The license of the mod, or a url if custom.
  * @param curseForgeId  The curseforge id of the mod.
@@ -13,13 +13,13 @@ package com.github.reviversmc.themodindex.api.data
  * @param links         A list of links related to the mod.
  * @param files         File versions for the mod.
  * @author ReviversMC
- * @since 7.1.0
+ * @since 7.2.1
  */
 @kotlinx.serialization.Serializable
 data class ManifestJson(
     val indexVersion: String,
     val genericIdentifier: String,
-    val fancyName: String?,
+    val fancyName: String,
     val author: String,
     val license: String?,
     val curseForgeId: Int?,
