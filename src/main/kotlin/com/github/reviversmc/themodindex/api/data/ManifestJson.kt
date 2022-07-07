@@ -24,7 +24,7 @@ data class ManifestJson(
     val license: String?,
     val curseForgeId: Int?,
     val modrinthId: String?,
-    val links: ManifestLinks?,
+    val links: ManifestLinks,
     val files: List<VersionFile>,
 )
 
