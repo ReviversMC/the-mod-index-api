@@ -14,10 +14,10 @@ import java.io.IOException
 /**
  * The default implementation of [DefaultApiDownloader]
  * @param okHttpClient The [OkHttpClient] to use for the download. Defaults to a new instance of [OkHttpClient]
- * @param baseUrl The base URL of the repository to download from. The repository should follow the layout as specified by [the-mod-index](https://github.com/reviversmc/the-mod-index/v4/mods/), Default: https://github.com/reviversmc/the-mod-index/v4/mods/
+ * @param baseUrl The base URL of the repository to download from. The repository should follow the layout as specified by [the-mod-index](https://github.com/reviversmc/the-mod-index/), Default: https://github.com/reviversmc/the-mod-index/v4/mods/
  * @param json The [Json] instance to use for serialization. Default options: ignoreUnknownKeys = true, prettyPrint = true
  * @author ReviversMC
- * @since 6.0.0
+ * @since 8.0.0
  */
 class DefaultApiDownloader(
     okHttpClient: OkHttpClient = OkHttpClient.Builder().build(),
