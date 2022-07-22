@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface IndexApiCall {
 
-    // These should NOT be absolute paths. Absolute paths would cause the calls to resolve to github.com instead of github.com/reviversmc/themodindex/
+    // These should NOT be absolute paths. Absolute paths would cause the calls to resolve to github.com instead of github.com/reviversmc/themodindex/.../
 
     @GET("index.json")
     fun index(): Call<IndexJson>
