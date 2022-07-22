@@ -18,7 +18,7 @@ import kotlin.test.assertNull
 
 class ApiDownloadTest {
 
-    private val baseUrl = "http://localhost" // Ensure not https!
+    private val baseUrl get() = "http://localhost:${server.port}/$schemaMajor/mods/" // Ensure not https
 
     private val identifier =
         "bricks:fake-mod:1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
@@ -59,7 +59,7 @@ class ApiDownloadTest {
     fun `should return default baseUrl`() {
         val apiDownloader = DefaultApiDownloader() // Use default repo url.
         assertEquals(
-            "https://raw.githubusercontent.com/ReviversMC/the-mod-index/", apiDownloader.formattedBaseUrl
+            "https://raw.githubusercontent.com/ReviversMC/the-mod-index/$schemaMajor/mods/", apiDownloader.formattedBaseUrl
         )
     }
 
@@ -80,7 +80,7 @@ class ApiDownloadTest {
         assertEquals(schemaMajor, "v${indexJson.indexVersion.substringBefore(".")}")
 
         val manualRequest = OkHttpClient.Builder().build().newCall(
-            Request.Builder().url("${apiDownloader.formattedBaseUrl}HEAD/mods/index.json").build()
+            Request.Builder().url("${apiDownloader.formattedBaseUrl}index.json").build()
         ).execute()
 
         assertEquals(
@@ -92,13 +92,13 @@ class ApiDownloadTest {
     @Test
     fun `should not return index info`() {
         // The basis of this test is to the index file is not automatically downloaded without an end user's consent.
-        val apiDownloader = DefaultApiDownloader(baseUrl = "$baseUrl:${server.port}")
+        val apiDownloader = DefaultApiDownloader(baseUrl = baseUrl)
         assertNull(apiDownloader.cachedIndexJson)
     }
 
     @Test
     fun `should return index info`() {
-        val apiDownloader = DefaultApiDownloader(baseUrl = "$baseUrl:${server.port}")
+        val apiDownloader = DefaultApiDownloader(baseUrl = baseUrl)
         assertEquals(Json.decodeFromString<IndexJson>(indexJsonText!!), apiDownloader.getOrDownloadIndexJson())
         assertEquals(Json.decodeFromString<IndexJson>(indexJsonText), apiDownloader.downloadIndexJson())
 
@@ -108,7 +108,7 @@ class ApiDownloadTest {
 
     @Test
     fun `should return manifest info`() {
-        val apiDownloader = DefaultApiDownloader(baseUrl = "$baseUrl:${server.port}")
+        val apiDownloader = DefaultApiDownloader(baseUrl = baseUrl)
 
         assertEquals(
             Json.decodeFromString<ManifestJson>(manifestJsonText!!), apiDownloader.downloadManifestJson(identifier)
@@ -117,7 +117,7 @@ class ApiDownloadTest {
 
     @Test
     fun `should return file info`() {
-        val apiDownloader = DefaultApiDownloader(baseUrl = "$baseUrl:${server.port}")
+        val apiDownloader = DefaultApiDownloader(baseUrl = baseUrl)
 
         val fileInfo = Json.decodeFromString<ManifestJson>(manifestJsonText!!).files.first()
 
