@@ -14,18 +14,18 @@ import java.io.IOException
 /**
  * The default implementation of [DefaultApiDownloader]
  * @param okHttpClient The [OkHttpClient] to use for the download. Defaults to a new instance of [OkHttpClient]
- * @param baseUrl The base URL of the repository to download from. The repository should follow the layout as specified by [the-mod-index](https://github.com/reviversmc/the-mod-index/), Default: https://github.com/reviversmc/the-mod-index/v4/mods/
+ * @param baseUrl The base URL of the repository to download from. The repository should follow the layout as specified by [the-mod-index](https://github.com/reviversmc/the-mod-index/), Default: https://github.com/reviversmc/the-mod-index/v5/mods/
  * @param json The [Json] instance to use for serialization. Default options: ignoreUnknownKeys = true, prettyPrint = true
  * @author ReviversMC
- * @since 8.0.0
+ * @since 9.0.0
  */
 class DefaultApiDownloader(
     okHttpClient: OkHttpClient = OkHttpClient.Builder().build(),
-    baseUrl: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v4/mods/",
+    baseUrl: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v5/mods/",
     json: Json = Json {
         ignoreUnknownKeys = true
         prettyPrint = true
-    }
+    },
 ) : ApiDownloader {
 
     override var cachedIndexJson: IndexJson? = null
@@ -53,7 +53,8 @@ class DefaultApiDownloader(
         getOrDownloadIndexJson() // Try to ensure that we have a valid index.
 
         // Assumes format of loader:name:hash, where everything is lowercase. Grabs from indexJson.
-        val genericIdentifiers = cachedIndexJson?.identifiers?.map { it.substringBeforeLast(":") }?.distinct() ?: throw IOException("Could not get generic identifiers from index.json at base url of $formattedBaseUrl")
+        val genericIdentifiers = cachedIndexJson?.identifiers?.map { it.substringBeforeLast(":") }?.distinct()
+            ?: throw IOException("Could not get generic identifiers from index.json at base url of $formattedBaseUrl")
         val lowerCasedGenericIdentifier = genericIdentifier.lowercase().split(":")
 
         if (genericIdentifiers.contains("${lowerCasedGenericIdentifier[0]}:${lowerCasedGenericIdentifier[1]}")) {
@@ -64,17 +65,31 @@ class DefaultApiDownloader(
         return null
     }
 
-    override fun downloadManifestFileEntry(identifier: String): VersionFile? {
+    override fun downloadManifestFileEntryFromIdentifier(identifier: String): VersionFile? {
         getOrDownloadIndexJson() // Try to ensure that we have a valid index.
 
         val lowerCaseIdentifier = identifier.lowercase()
         if (cachedIndexJson?.identifiers?.contains(lowerCaseIdentifier) == true) {
-            val manifestJson = downloadManifestJson(lowerCaseIdentifier) // We can pass the whole identifier as the hash will be ignored.
-                ?: throw IOException("Could not get generic identifiers from index.json at base url of $formattedBaseUrl")
+            val manifestJson =
+                downloadManifestJson(lowerCaseIdentifier) // We can pass the whole identifier as the hash will be ignored.
+                    ?: throw IOException("Could not get generic identifiers from index.json at base url of $formattedBaseUrl")
             return manifestJson.files.firstOrNull {
-                it.sha512Hash == lowerCaseIdentifier.split(":").last()
+                it.shortSha512Hash == lowerCaseIdentifier.substringAfterLast(":")
             }
         }
         return null
+    }
+
+    override fun downloadManifestFileEntryFromHash(shortHash: String): List<VersionFile> {
+        getOrDownloadIndexJson() // Try to ensure that we have a valid index.
+
+        val lowerCasedShortHash = shortHash.lowercase()
+        val matches = cachedIndexJson?.identifiers?.filter { shortHash == it.substringAfterLast(":") }
+            ?: throw IOException("Could not get generic identifiers from index.json at base url of $formattedBaseUrl")
+        return matches.mapNotNull { identifier ->
+            downloadManifestJson(identifier)?.files?.first {
+                it.shortSha512Hash == lowerCasedShortHash
+            }
+        }
     }
 }

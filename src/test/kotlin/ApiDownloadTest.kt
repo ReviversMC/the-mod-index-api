@@ -21,8 +21,8 @@ class ApiDownloadTest {
     private val baseUrl get() = "http://localhost:${server.port}/$schemaMajor/mods/" // Ensure not https
 
     private val identifier =
-        "bricks:fake-mod:1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9"
-    private val schemaMajor = "v4"
+        "bricks:fake-mod:1c88ae7e3799f75"
+    private val schemaMajor = "v5"
 
     private val indexJsonText = javaClass.getResource("/fakeIndex/mods/index.json")?.readText()
     private val manifestJsonText = javaClass.getResource("/fakeIndex/mods/bricks/fake-mod.json")?.readText()
@@ -34,11 +34,13 @@ class ApiDownloadTest {
                     "/$schemaMajor/mods/index.json" -> indexJsonText?.let {
                         return MockResponse().setResponseCode(200).setBody(it)
                     } ?: return MockResponse().setResponseCode(500)
+
                     "/$schemaMajor/mods/bricks/fake-mod.json" -> {
                         manifestJsonText?.let {
                             return MockResponse().setResponseCode(200).setBody(it)
                         } ?: return MockResponse().setResponseCode(500)
                     }
+
                     else -> return MockResponse().setResponseCode(404)
                 }
             }
@@ -59,7 +61,8 @@ class ApiDownloadTest {
     fun `should return default baseUrl`() {
         val apiDownloader = DefaultApiDownloader() // Use default repo url.
         assertEquals(
-            "https://raw.githubusercontent.com/ReviversMC/the-mod-index/$schemaMajor/mods/", apiDownloader.formattedBaseUrl
+            "https://raw.githubusercontent.com/ReviversMC/the-mod-index/$schemaMajor/mods/",
+            apiDownloader.formattedBaseUrl
         )
     }
 
@@ -121,6 +124,9 @@ class ApiDownloadTest {
 
         val fileInfo = Json.decodeFromString<ManifestJson>(manifestJsonText!!).files.first()
 
-        assertEquals(fileInfo, apiDownloader.downloadManifestFileEntry(identifier))
+        assertEquals(fileInfo, apiDownloader.downloadManifestFileEntryFromIdentifier(identifier))
+
+        val shortHash = identifier.substringAfterLast(":")
+        assertEquals(listOf(fileInfo), apiDownloader.downloadManifestFileEntryFromHash(shortHash))
     }
 }

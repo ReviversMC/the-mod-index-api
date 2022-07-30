@@ -57,8 +57,19 @@ interface ApiDownloader {
      * Retrieves the requested [VersionFile] for the given [identifier].
      * @throws [IOException] if the download fails.
      * @author ReviversMC
-     * @since 6.1.0
+     * @since 9.0.0
      */
     @kotlin.jvm.Throws(IOException::class)
-    fun downloadManifestFileEntry(identifier: String): VersionFile?
+    fun downloadManifestFileEntryFromIdentifier(identifier: String): VersionFile?
+
+    /**
+     * Retrieves the requested [VersionFile]s for the given sha512 [shortHash].
+     * While extremely unlikely, there is a chance that the shortHash is not unique, and thus multiple [VersionFile]s will be returned.
+     * Should the [shortHash] be more than 15 characters, it will be truncated to the first 15 characters.
+     * @throws [IOException] if the download fails.
+     * @author ReviversMC
+     * @since 9.0.0
+     */
+    @kotlin.jvm.Throws(IOException::class)
+    fun downloadManifestFileEntryFromHash(shortHash: String): List<VersionFile>
 }
