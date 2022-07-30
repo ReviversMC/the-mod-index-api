@@ -57,18 +57,18 @@ data class ManifestLinks(val issue: String?, val sourceControl: String?, val oth
  *
  * @param fileName     The name of the file, should not be used for version checking.
  * @param mcVersions   A list of Minecraft versions the file is compatible with.
- * @param sha512Hash     The sha512 hash of the file.
+ * @param shortSha512Hash The short SHA512 hash of the file, consisting of only 15 characters.
  * @param downloadUrls A list of urls to download the file from.
  * @param curseDownloadAvailable Whether the file is available on Curse. A further api call to CF is required to get the download url.
  * @param relationsToOtherMods The relations (i.e. dependencies/conflicts) to other mods.
  * @author ReviversMC
- * @since 7.2.0
+ * @since 9.0.0
  */
 @kotlinx.serialization.Serializable
 data class VersionFile(
     val fileName: String,
     val mcVersions: List<String>,
-    val sha512Hash: String,
+    val shortSha512Hash: String,
     val downloadUrls: List<String>,
     val curseDownloadAvailable: Boolean,
     val relationsToOtherMods: RelationsToOtherMods,

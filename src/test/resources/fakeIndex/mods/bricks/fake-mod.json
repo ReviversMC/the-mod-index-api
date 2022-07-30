@@ -1,5 +1,5 @@
 {
-  "indexVersion": "4.2.0",
+  "indexVersion": "5.0.0",
   "genericIdentifier": "bricks:fake-mod",
   "fancyName": "Fake Mod",
   "author": "Fake Author",
@@ -22,7 +22,7 @@
       "mcVersions": [
         "1.18.2"
       ],
-      "sha512Hash": "1c88ae7e3799f75d73d34c1be40dec8cabbd0f6142b39cb5bdfb32803015a7eea113c38e975c1dd4aaae59f9c3be65eebeb955868b1a10ffca0b6a6b91f8cac9",
+      "shortSha512Hash": "1c88ae7e3799f75",
       "downloadUrls": [],
       "curseDownloadAvailable": false,
       "relationsToOtherMods": {
