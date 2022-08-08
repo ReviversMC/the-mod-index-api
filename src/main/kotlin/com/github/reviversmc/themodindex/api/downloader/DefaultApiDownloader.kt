@@ -29,11 +29,8 @@ class DefaultApiDownloader @JvmOverloads constructor(
 
     constructor(
         okHttpClient: OkHttpClient,
-        baseUrl: String = "https://raw.githubusercontent.com/ReviversMC/the-mod-index/v5/mods/",
-        json: Json = Json {
-            ignoreUnknownKeys = true
-            prettyPrint = true
-        },
+        baseUrl: String,
+        json: Json,
     ) : this(baseUrl, okHttpClient, json)
 
     override var cachedIndexJson: IndexJson? = null
@@ -79,9 +76,10 @@ class DefaultApiDownloader @JvmOverloads constructor(
         indexApiCall.manifest(it.first, it.second).execute().body()
     }
 
-    override fun downloadManifestJsonWithOverrides(genericIdentifier: String) = preDownloadManifestJson(genericIdentifier)?.let {
-        indexApiCall.manifestWithOverrides(it.first, it.second).execute().body()
-    }
+    override fun downloadManifestJsonWithOverrides(genericIdentifier: String) =
+        preDownloadManifestJson(genericIdentifier)?.let {
+            indexApiCall.manifestWithOverrides(it.first, it.second).execute().body()
+        }
 
 
     override fun downloadManifestFileEntryFromIdentifier(identifier: String): VersionFile? {
