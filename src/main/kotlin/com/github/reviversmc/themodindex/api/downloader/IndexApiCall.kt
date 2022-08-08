@@ -2,6 +2,7 @@ package com.github.reviversmc.themodindex.api.downloader
 
 import com.github.reviversmc.themodindex.api.data.IndexJson
 import com.github.reviversmc.themodindex.api.data.ManifestJson
+import com.github.reviversmc.themodindex.api.data.ManifestJsonWithOverrides
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,5 +16,10 @@ interface IndexApiCall {
 
     @GET("{modLoader}/{modName}.json")
     fun manifest(@Path("modLoader") modLoader: String, @Path("modName") modName: String): Call<ManifestJson>
+
+    @GET("{modLoader}/{modName}.json")
+    fun manifestWithOverrides(@Path("modLoader") modLoader: String, @Path("modName") modName: String): Call<ManifestJsonWithOverrides>
+
+
 
 }

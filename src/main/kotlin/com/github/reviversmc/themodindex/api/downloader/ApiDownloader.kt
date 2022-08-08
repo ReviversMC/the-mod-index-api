@@ -2,6 +2,7 @@ package com.github.reviversmc.themodindex.api.downloader
 
 import com.github.reviversmc.themodindex.api.data.IndexJson
 import com.github.reviversmc.themodindex.api.data.ManifestJson
+import com.github.reviversmc.themodindex.api.data.ManifestJsonWithOverrides
 import com.github.reviversmc.themodindex.api.data.VersionFile
 import java.io.IOException
 
@@ -45,13 +46,27 @@ interface ApiDownloader {
     fun getOrDownloadIndexJson(): IndexJson?
 
     /**
-     * Retrieves the requested [ManifestJson] file for the given [genericIdentifier]. The format for a generic identifier is "modLoader:modName".
+     * Retrieves the requested [ManifestJson] file for the given [genericIdentifier].
+     * The format for a generic identifier is "modLoader:modName".
      * @throws [IOException] if the download fails.
      * @author ReviversMC
      * @since 1.0.0-2.0.0
      */
     @kotlin.jvm.Throws(IOException::class)
     fun downloadManifestJson(genericIdentifier: String): ManifestJson?
+
+    /**
+     * Retrieves the requested [ManifestJsonWithOverrides] file for the given [genericIdentifier].
+     * The format for a generic identifier is "modLoader:modName".
+     *
+     * For most consumers of TMI, [downloadManifestJson] is more than sufficient.
+     * Overrides are mostly for internal tools such as the [TMI-Maintainer](https://github.com/reviversmc/the-mod-index-creator)
+     * @throws [IOException] if the download fails.
+     * @author ReviversMC
+     * @since 9.1.0
+     */
+    @kotlin.jvm.Throws(IOException::class)
+    fun downloadManifestJsonWithOverrides(genericIdentifier: String): ManifestJsonWithOverrides?
 
     /**
      * Retrieves the requested [VersionFile] for the given [identifier].
