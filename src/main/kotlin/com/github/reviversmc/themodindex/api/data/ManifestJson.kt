@@ -124,9 +124,9 @@ data class ManifestJsonWithOverrides(
     /**
      * Converts the manifest with overrides to a regular manifest, dropping all override data.
      * @author ReviversMC
-     * @since 9.2.0
+     * @since 9.2.1
      */
-    fun toManifestJson() {
+    fun toManifestJson() =
         ManifestJson(
             indexVersion,
             genericIdentifier,
@@ -138,7 +138,7 @@ data class ManifestJsonWithOverrides(
             links,
             files,
         )
-    }
+
 }
 
 /**
