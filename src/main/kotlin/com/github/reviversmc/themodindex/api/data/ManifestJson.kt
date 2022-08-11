@@ -120,7 +120,26 @@ data class ManifestJsonWithOverrides(
     val links: ManifestLinks,
     val files: List<VersionFile>,
     val overrides: Overrides?,
-)
+) {
+    /**
+     * Converts the manifest with overrides to a regular manifest, dropping all override data.
+     * @author ReviversMC
+     * @since 9.2.0
+     */
+    fun toManifestJson() {
+        ManifestJson(
+            indexVersion,
+            genericIdentifier,
+            fancyName,
+            author,
+            license,
+            curseForgeId,
+            modrinthId,
+            links,
+            files,
+        )
+    }
+}
 
 /**
  * The possible overrideable fields in the manifest.
@@ -167,13 +186,13 @@ data class OverrideSelection<T>(val add: T?, val remove: List<String>?, val repl
  * @param sourceControl A link to the mod's source control, no mirrors. Remove endings like ".git".
  * @param others        A list of other links related to the mod.
  * @author ReviversMC
- * @since 9.1.0
+ * @since 9.2.0
  */
 @Serializable
 data class ManifestOverrideLinks(
     val issue: String?,
     val sourceControl: String?,
-    val others: OverrideSelection<ManifestLinks.OtherLink>?,
+    val others: OverrideSelection<List<ManifestLinks.OtherLink>>?,
 )
 
 /**
