@@ -19,7 +19,7 @@ jobs:
       - name: Create KDoc
         run: ./gradlew dokkaHtml
       - name: Deploy KDoc
-        uses: JamesIves/github-pages-deploy-action@v4.4.0
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: KDoc
           folder: build/dokka/html
